@@ -1,0 +1,19 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Tests (incl. constraint policy tests — do not skip or mark xfail)
+        run: pytest -v
+      # T7 adds the ≤500 KB first-load budget check here (AC4).
+      # T12 wires the full A/B/C eval tiers + golden set.

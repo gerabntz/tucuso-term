@@ -1,0 +1,7 @@
+# Runtime — keep minimal on purpose: this file is the M3/N3 policy surface.
+# CI fails if any LLM, analytics, or tracking SDK appears here.
+flask==3.0.3
+jinja2==3.1.4
+
+# Dev/test
+pytest==8.2.2
