@@ -7,6 +7,8 @@ from flask import Flask
 
 from server import db as dbmod
 from server.api import bp as api_bp
+from server.export import bp_export
+from server.search import bp_search
 
 
 def create_app(config=None):
@@ -21,6 +23,8 @@ def create_app(config=None):
         app.config.update(config)
     dbmod.init_app(app)
     app.register_blueprint(api_bp)
+    app.register_blueprint(bp_search)
+    app.register_blueprint(bp_export)
 
     @app.get("/healthz")
     def healthz():
