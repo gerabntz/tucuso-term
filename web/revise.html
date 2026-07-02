@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Corregir {{ term.text }} — Tucuso-term{% endblock %}
+{% block content %}
+<h1>Sugerir corrección: {{ term.text }} <span class="lang">{{ term.lang }}</span></h1>
+<p>La versión publicada sigue visible hasta que dos revisores aprueben el cambio.</p>
+<form method="post" action="/term/{{ term.id }}/revise">
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <label>Término corregido <input name="text" maxlength="200" value="{{ term.text }}"></label>
+  <label>Ejemplo corregido <textarea name="example" maxlength="500">{{ term.example or '' }}</textarea></label>
+  <label>Motivo del cambio <textarea name="reason" maxlength="500" required></textarea></label>
+  <button type="submit">Enviar corrección</button>
+</form>
+{% if token %}
+<div class="notice"><p>Corrección recibida. Código de seguimiento:</p><p><code>{{ token }}</code></p></div>
+{% endif %}
+{% if error %}<div class="notice error">{{ error }}</div>{% endif %}
+{% endblock %}

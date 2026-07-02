@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ term.text }} — Tucuso-term{% endblock %}
+{% block content %}
+<article class="term">
+  <h1>{{ term.text }} <span class="lang">{{ term.lang }}</span></h1>
+  {% for c in counterparts %}
+  <p class="counterpart big">⇄ <strong>{{ c.text }}</strong> <span class="lang">{{ c.lang }}</span></p>
+  {% endfor %}
+  <dl>
+    <dt>Categoría</dt><dd>{{ term.category }}</dd>
+    <dt>Registro</dt><dd>{{ term.register }}</dd>
+    {% if term.zone %}<dt>Zona</dt><dd>{{ term.zone }} — <em>uso regional, verifique con el interlocutor</em></dd>{% endif %}
+    {% if term.example %}<dt>Ejemplo</dt><dd>{{ term.example }}</dd>{% endif %}
+    <dt>Fuente</dt><dd>{{ term.source }}</dd>
+    <dt>Validación</dt><dd>publicado ({{ term.date }}){% if versions > 1 %} · {{ versions }} versiones{% endif %}</dd>
+  </dl>
+  <a class="button" href="/term/{{ term.id }}/revise">Sugerir corrección</a>
+</article>
+{% endblock %}

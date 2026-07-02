@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Estado de envío — Tucuso-term{% endblock %}
+{% block content %}
+<h1>Estado de su envío</h1>
+<form method="get" action="/status">
+  <label>Código de seguimiento <input name="token" maxlength="64" value="{{ token or '' }}" required></label>
+  <button type="submit">Consultar</button>
+</form>
+{% if status %}
+<div class="notice">
+  <p>Estado: <strong>{{ {'pending_review': 'en revisión',
+                         'published': 'publicado',
+                         'rejected': 'rechazado'}.get(status, status) }}</strong></p>
+</div>
+{% elif token %}
+<div class="notice error">Código desconocido o expirado.</div>
+{% endif %}
+{% endblock %}

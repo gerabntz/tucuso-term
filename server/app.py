@@ -9,6 +9,7 @@ from server import db as dbmod
 from server.api import bp as api_bp
 from server.export import bp_export
 from server.search import bp_search
+from server.web import bp_web
 
 
 def create_app(config=None):
@@ -25,10 +26,16 @@ def create_app(config=None):
     app.register_blueprint(api_bp)
     app.register_blueprint(bp_search)
     app.register_blueprint(bp_export)
+    app.register_blueprint(bp_web)
 
     @app.get("/healthz")
     def healthz():
         return {"ok": True}
+
+    @app.get("/sw.js")
+    def service_worker():
+        # served from the root so the SW scope covers the whole site
+        return app.send_static_file("sw.js")
 
     return app
 

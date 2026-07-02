@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Proponer término — Tucuso-term{% endblock %}
+{% block content %}
+<h1>Proponer un término</h1>
+<p>No se requiere cuenta. Recibirá un código anónimo para consultar el estado.
+Dos revisores bilingües deben aprobarlo antes de publicarse.</p>
+<form id="submit-form" method="post" action="/submit">
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <label>Término <input name="text" maxlength="200" required></label>
+  <label>Idioma
+    <select name="lang"><option value="es">español</option><option value="en">english</option></select>
+  </label>
+  <label>Categoría
+    <select name="category" required>
+      {% for c in categories %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Registro
+    <select name="register">
+      <option value="neutral">neutral</option><option value="formal">formal</option>
+      <option value="coloquial">coloquial</option><option value="vulgar">vulgar</option>
+    </select>
+  </label>
+  <label>Zona (opcional)
+    <select name="zone">
+      <option value="">—</option><option>Oriente</option><option>Occidente</option>
+      <option>Cordillera</option><option>Llanos</option>
+    </select>
+  </label>
+  <label>Ejemplo de uso (opcional) <textarea name="example" maxlength="500"></textarea></label>
+  <button type="submit">Enviar a revisión</button>
+</form>
+{% if token %}
+<div class="notice">
+  <p>Recibido. Su código de seguimiento (guárdelo, expira en 30 días):</p>
+  <p><code>{{ token }}</code></p>
+</div>
+{% endif %}
+{% if error %}<div class="notice error">{{ error }}</div>{% endif %}
+{% endblock %}

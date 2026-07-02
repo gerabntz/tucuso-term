@@ -1,0 +1,13 @@
+{
+  "name": "Tucuso-term",
+  "short_name": "Tucuso",
+  "description": "Glosario EN⇄ES de emergencia para intérpretes voluntarios",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111418",
+  "theme_color": "#111418",
+  "lang": "es",
+  "icons": [
+    { "src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
