@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Cola de moderación — Tucuso-term{% endblock %}
+{% block content %}
+<h1>Cola de moderación</h1>
+{% if message %}<div class="notice">{{ message }}</div>{% endif %}
+<p>Se publica con <strong>2 aprobaciones de revisores distintos y 0 vetos</strong>.
+Un veto requiere motivo y devuelve el elemento.</p>
+
+<h2>Términos pendientes ({{ terms|length }})</h2>
+{% for t in terms %}
+<div class="notice">
+  <p><strong>{{ t.text }}</strong> <span class="lang">{{ t.lang }}</span>
+     — {{ t.category }} · {{ t.register }}{% if t.zone %} · {{ t.zone }}{% endif %}</p>
+  {% if t.example %}<p><em>{{ t.example }}</em></p>{% endif %}
+  <p class="meta">fuente: {{ t.source }}</p>
+  {% if ('term', t.id) in my_votes %}
+    <p class="meta">Ya votó sobre este término.</p>
+  {% else %}
+  <form method="post" action="/mod/vote">
+    <input type="hidden" name="target_type" value="term">
+    <input type="hidden" name="target_id" value="{{ t.id }}">
+    <label>Motivo (obligatorio para veto) <input name="reason" maxlength="300"></label>
+    <button name="verdict" value="approve">Aprobar</button>
+    <button name="verdict" value="veto" class="danger">Vetar</button>
+  </form>
+  {% endif %}
+</div>
+{% else %}<p>Nada pendiente.</p>{% endfor %}
+
+<h2>Correcciones pendientes ({{ revisions|length }})</h2>
+{% for r in revisions %}
+<div class="notice">
+  <p>Sobre <strong>{{ r.base.text }}</strong> <span class="lang">{{ r.base.lang }}</span>:</p>
+  <ul>{% for k, v in r.proposed.items() %}<li>{{ k }} → «{{ v }}»</li>{% endfor %}</ul>
+  <p><em>Motivo: {{ r.reason }}</em></p>
+  {% if ('revision', r.id) in my_votes %}
+    <p class="meta">Ya votó sobre esta corrección.</p>
+  {% else %}
+  <form method="post" action="/mod/vote">
+    <input type="hidden" name="target_type" value="revision">
+    <input type="hidden" name="target_id" value="{{ r.id }}">
+    <label>Motivo (obligatorio para veto) <input name="reason" maxlength="300"></label>
+    <button name="verdict" value="approve">Aprobar</button>
+    <button name="verdict" value="veto" class="danger">Vetar</button>
+  </form>
+  {% endif %}
+</div>
+{% else %}<p>Nada pendiente.</p>{% endfor %}
+{% endblock %}

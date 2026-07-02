@@ -9,6 +9,7 @@ from server import db as dbmod
 from server.api import bp as api_bp
 from server.export import bp_export
 from server.search import bp_search
+from server.moderation_ui import bp_mod
 from server.web import bp_web
 
 
@@ -27,6 +28,7 @@ def create_app(config=None):
     app.register_blueprint(bp_search)
     app.register_blueprint(bp_export)
     app.register_blueprint(bp_web)
+    app.register_blueprint(bp_mod)
 
     @app.get("/healthz")
     def healthz():
