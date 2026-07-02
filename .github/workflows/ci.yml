@@ -13,7 +13,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: Tests (incl. constraint policy tests — do not skip or mark xfail)
+      - name: Constraint policy + eval suite (immutable — never skip or xfail)
+        # Covers: M4 schema shield (AC2), M3/N3 lockfile, M1 quorum e2e (AC1),
+        # M8 history immutability (AC6), M6 budget + no-third-party (AC4),
+        # M12 pinned seeds / fail-loud importers, M9/M10 tokens & magic links.
         run: pytest -v
-      # T7 adds the ≤500 KB first-load budget check here (AC4).
-      # T12 wires the full A/B/C eval tiers + golden set.
