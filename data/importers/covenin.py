@@ -79,6 +79,25 @@ def parse_covenin(filepath):
     return entries
 
 
+def import_rows(db_path, rows, source):
+    """Shared staging writer: rows are dicts with source_ref, text, definition,
+    and optional en_equiv / example. Single transaction, idempotent per source."""
+    conn = sqlite3.connect(db_path)
+    try:
+        now = datetime.now(timezone.utc).isoformat()
+        with conn:
+            conn.execute("DELETE FROM seed_staging WHERE source=?", (source,))
+            conn.executemany(
+                "INSERT INTO seed_staging (source, source_ref, lang, text,"
+                " definition, en_equiv, example, category, register, imported_at)"
+                " VALUES (?, ?, 'es', ?, ?, ?, ?, 'Protocolos', 'formal', ?)",
+                [(source, r.get("source_ref"), r["text"], r["definition"],
+                  r.get("en_equiv"), r.get("example"), now) for r in rows],
+            )
+    finally:
+        conn.close()
+
+
 def import_to_db(db_path, entries, source):
     conn = sqlite3.connect(db_path)
     try:

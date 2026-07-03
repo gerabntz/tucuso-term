@@ -9,12 +9,18 @@
    python -c "from server.db import connect, apply_migrations; \
               c = connect('data/tucuso.db'); apply_migrations(c)"
    ```
-3. Seed staging (E2 license check must be resolved first):
+3. Seed staging:
    ```bash
-   python -m data.importers.covenin data/tucuso.db
-   python -m data.importers.onsa    data/tucuso.db
+   python -m data.importers.unisdr         data/tucuso.db  # UNISDR 2009, free reuse w/ attribution
+   python -m data.importers.original_vocab data/tucuso.db  # original definitions (machine-assisted draft)
+   python -m data.importers.onsa           data/tucuso.db  # ONSA public glossary
    ```
-   Publishing staged seeds is T13: human spot-check, then bulk publish.
+   (`data/importers/covenin.py` is retained for its parsing machinery but its
+   verbatim COVENIN definitions are NOT seeded — license-encumbered; replaced
+   by the original-wording vocabulary above.)
+   Publishing staged seeds is T13: human spot-check, then bulk publish. The
+   original-draft + UNISDR rows include `en_equiv`, so T13 publishes ES+EN
+   concept pairs.
 4. Web app config: WSGI file points at `server.app:app`. Set env vars
    `TUCUSO_DB=/home/<user>/tucuso-term/data/tucuso.db` and a strong
    `TUCUSO_SECRET` (rotating it invalidates reviewer sessions — fine).
