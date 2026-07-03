@@ -57,11 +57,11 @@ def test_revision_form_no_js(client):
 
 
 def test_light_editorial_theme(client):
-    """Design spec v2: warm paper light theme, square corners, muted accent."""
+    """Design spec v2: warm paper light theme, soft 5px corners, muted accent."""
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
     assert "--bg: #f6f4ef" in css
     assert "--accent: #3e5f5c" in css
-    assert "border-radius: 0" in css and "border-radius: 6" not in css
+    assert "border-radius: 5px" in css
     html = client.get("/").get_data(as_text=True)
     assert 'lang="es"' in html  # ES-first UI
 

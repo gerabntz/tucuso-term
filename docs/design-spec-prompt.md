@@ -46,7 +46,7 @@ Spanish compounds are long ("Concientización/sensibilización pública") — ev
 
 ### Space, shape, motion
 
-- **Radius 0 everywhere. No rounded corners — including chips, buttons, inputs, banners.** Chips are small rectangles.
+- **Radius 5px everywhere** — a uniform, barely-there softening on chips, buttons, inputs, banners. Never larger; no pill shapes.
 - 4px spacing grid; card padding 16px; page gutter 16px; max content width 44rem centered.
 - Hairline rules (`--line`, 1px) structure the page like a well-set book: under the header, between result entries, above the footer. Cards may be borderless surfaces separated by rules rather than boxes — prefer the dictionary-entry look over the card-grid look.
 - Touch targets ≥48×48px; adjacent targets ≥8px apart.
