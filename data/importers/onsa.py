@@ -1,11 +1,11 @@
 import argparse
 import html
 import re
-import sqlite3
-from datetime import datetime, timezone
 from pathlib import Path
 
-from data.importers.covenin import verify_sha256
+from data.importers.common import verify_sha256, import_rows
+
+SOURCE = 'onsa-glosario'
 
 
 def parse_onsa(filepath):
@@ -67,20 +67,9 @@ def parse_onsa(filepath):
     return entries
 
 
-def import_to_db(db_path, entries, source):
-    conn = sqlite3.connect(db_path)
-    try:
-        now = datetime.now(timezone.utc).isoformat()
-        with conn:
-            conn.execute("DELETE FROM seed_staging WHERE source=?", (source,))
-            conn.executemany(
-                "INSERT INTO seed_staging (source, source_ref, lang, text, definition,"
-                " category, register, imported_at) VALUES (?, ?, 'es', ?, ?,"
-                " 'Protocolos', 'formal', ?)",
-                [(source, ref, text, definition, now) for ref, text, definition in entries],
-            )
-    finally:
-        conn.close()
+def to_rows(entries):
+    return [dict(source_ref=ref, text=text, definition=definition)
+            for ref, text, definition in entries]
 
 
 def main():
@@ -91,8 +80,8 @@ def main():
     source_file = repo_root / 'data' / 'sources' / 'onsa-glosario.html'
     verify_sha256(source_file)
     entries = parse_onsa(source_file)
-    import_to_db(args.db_path, entries, 'onsa-glosario')
-    print(f"Imported {len(entries)} entries from onsa-glosario")
+    import_rows(args.db_path, to_rows(entries), SOURCE)
+    print(f"Imported {len(entries)} entries from {SOURCE}")
 
 
 if __name__ == '__main__':

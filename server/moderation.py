@@ -10,7 +10,7 @@ published row per (concept_id, lang); older rows ARE the history.
 import json
 import sqlite3
 
-from server.quorum import resolve, PENDING, PUBLISHED, REJECTED
+from server.quorum import resolve, PENDING, PUBLISHED
 
 REVISABLE_FIELDS = {"text", "category", "register", "zone", "example", "source"}
 

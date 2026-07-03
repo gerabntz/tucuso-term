@@ -9,9 +9,8 @@ from flask import Blueprint, current_app, render_template, request
 from server import ratelimit, tokens
 from server.api import CATEGORIES, public_term
 from server.db import get_db
-from server.moderation import current_published
 from server.quorum import PENDING
-from server.search import build_match, FILTERS
+from server.search import build_match
 
 bp_web = Blueprint("web", __name__)
 

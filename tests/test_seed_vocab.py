@@ -3,11 +3,10 @@ from pathlib import Path
 
 import pytest
 
-from data.importers.covenin import verify_sha256
+from data.importers.common import verify_sha256, import_rows
 from data.importers.original_vocab import parse_vocab, SOURCE as VOCAB_SOURCE
 from data.importers.original_vocab import main as _  # noqa: F401 (import check)
 from data.importers.unisdr import parse_unisdr, TERM_MAP, SOURCE as UNISDR_SOURCE
-from data.importers.covenin import import_rows
 
 REPO_ROOT = Path(__file__).parents[1]
 
@@ -38,14 +37,23 @@ def test_original_vocab_pinned_and_complete(db_path):
 
 
 def test_original_vocab_is_not_covenin_text():
-    """The draft must be original wording, not the COVENIN definitions."""
+    """The draft must be original wording, not the COVENIN definitions.
+
+    The COVENIN text itself is license-encumbered and not in the repo; we check
+    against a pinned fingerprint of 8-word-shingle hashes derived from it."""
+    import hashlib
+    fp_path = REPO_ROOT / "data" / "sources" / "covenin-3661-fingerprint.txt"
+    verify_sha256(fp_path)
+    shingles = {ln for ln in fp_path.read_text().splitlines()
+                if ln and not ln.startswith("#")}
+    assert len(shingles) > 1500  # sanity: fingerprint not truncated
     src = (REPO_ROOT / "data" / "sources" / "vocabulario-ve-original.json").read_text()
-    covenin = (REPO_ROOT / "data" / "sources" / "covenin-3661-2001.txt").read_text()
-    covenin_flat = " ".join(covenin.split()).lower()
     for row in parse_vocab(REPO_ROOT / "data" / "sources" / "vocabulario-ve-original.json"):
-        # no definition sentence may appear verbatim in the COVENIN text
-        head = " ".join(row["definition"].split()[:8]).lower()
-        assert head not in covenin_flat, f"verbatim COVENIN wording in: {row['text']}"
+        words = row["definition"].lower().split()
+        for i in range(max(1, len(words) - 7)):
+            head = " ".join(words[i:i + 8])
+            digest = hashlib.sha256(head.encode()).hexdigest()[:16]
+            assert digest not in shingles, f"verbatim COVENIN wording in: {row['text']}"
     assert "PDVSA" not in src
 
 

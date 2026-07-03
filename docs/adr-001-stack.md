@@ -23,7 +23,7 @@ come from the C2C repo, which is Python.
 | Database | stdlib `sqlite3` + FTS5 | Investigation-doc recommendation; single file = trivial backup/export; no ORM (N5/M8 immutability is easier to enforce with explicit SQL) |
 | Templates | Jinja2, server-rendered | No SPA framework → M6 budget is easy; works on 2 GB-RAM Android browsers |
 | Front-end JS | Vanilla, hand-rolled service worker | No third-party runtime deps (N3); PWA offline read + client-side snapshot search (M5/M11) |
-| CSS | Single hand-written stylesheet, dark default | Budget + PRD pillar |
+| CSS | Single hand-written stylesheet, light editorial theme | Budget + PRD pillar |
 | Hosting (recommended) | PythonAnywhere free tier | Genuinely $0, persistent disk for SQLite, WSGI-native, HTTPS included. Fallback: any small VPS (~€3/mo) or Fly.io machine — same code, gunicorn |
 | CI | GitHub Actions: pytest + constraint checks | AC2 shield test, M6 budget check, M3 lockfile check run as immutable policy tests |
 

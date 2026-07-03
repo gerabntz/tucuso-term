@@ -15,9 +15,10 @@
    python -m data.importers.original_vocab data/tucuso.db  # original definitions (machine-assisted draft)
    python -m data.importers.onsa           data/tucuso.db  # ONSA public glossary
    ```
-   (`data/importers/covenin.py` is retained for its parsing machinery but its
-   verbatim COVENIN definitions are NOT seeded — license-encumbered; replaced
-   by the original-wording vocabulary above.)
+   (COVENIN 3661 verbatim definitions are NOT seeded and its text is not in the
+   repo — license-encumbered; replaced by the original-wording vocabulary above.
+   `data/sources/covenin-3661-fingerprint.txt` keeps shingle hashes so CI can
+   prove the original definitions copy no COVENIN wording.)
    Publishing staged seeds is T13: human spot-check, then bulk publish. The
    original-draft + UNISDR rows include `en_equiv`, so T13 publishes ES+EN
    concept pairs.

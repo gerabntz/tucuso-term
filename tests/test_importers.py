@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from data.importers.covenin import parse_covenin, verify_sha256, import_to_db as covenin_import
-from data.importers.onsa import parse_onsa, import_to_db as onsa_import
+from data.importers.common import verify_sha256, import_rows
+from data.importers.onsa import parse_onsa, to_rows, SOURCE as ONSA_SOURCE
 
 REPO_ROOT = Path(__file__).parents[1]
 
@@ -15,36 +15,11 @@ def db_path(tmp_path):
     db_file = tmp_path / 'test.db'
     conn = sqlite3.connect(str(db_file))
     migrations = REPO_ROOT / 'data' / 'migrations'
-    conn.executescript((migrations / '001_init.sql').read_text())
-    conn.executescript((migrations / '002_seed_staging.sql').read_text())
+    for m in sorted(migrations.glob('*.sql')):
+        conn.executescript(m.read_text())
     conn.commit()
     conn.close()
     return str(db_file)
-
-
-def test_covenin_importer(db_path):
-    source_file = REPO_ROOT / 'data' / 'sources' / 'covenin-3661-2001.txt'
-    verify_sha256(source_file)
-    entries = parse_covenin(source_file)
-    assert len(entries) >= 40
-    covenin_import(db_path, entries, 'covenin-3661-2001')
-
-    conn = sqlite3.connect(db_path)
-    rows = conn.execute(
-        "SELECT text, definition FROM seed_staging WHERE source='covenin-3661-2001'"
-    ).fetchall()
-    assert len(rows) >= 40
-    for text, definition in rows:
-        assert text and definition
-        assert 'FONDONORMA' not in text
-
-    # idempotency: re-run replaces, count unchanged
-    covenin_import(db_path, entries, 'covenin-3661-2001')
-    count2 = conn.execute(
-        "SELECT COUNT(*) FROM seed_staging WHERE source='covenin-3661-2001'"
-    ).fetchone()[0]
-    assert count2 == len(rows)
-    conn.close()
 
 
 def test_onsa_importer(db_path):
@@ -52,15 +27,22 @@ def test_onsa_importer(db_path):
     verify_sha256(source_file)
     entries = parse_onsa(source_file)
     assert len(entries) >= 15
-    onsa_import(db_path, entries, 'onsa-glosario')
+    import_rows(db_path, to_rows(entries), ONSA_SOURCE)
 
     conn = sqlite3.connect(db_path)
     rows = conn.execute(
-        "SELECT text, definition FROM seed_staging WHERE source='onsa-glosario'"
-    ).fetchall()
+        "SELECT text, definition FROM seed_staging WHERE source=?",
+        (ONSA_SOURCE,)).fetchall()
     assert len(rows) >= 15
     for text, definition in rows:
         assert text and definition
+
+    # idempotency: re-run replaces, count unchanged
+    import_rows(db_path, to_rows(entries), ONSA_SOURCE)
+    count2 = conn.execute(
+        "SELECT COUNT(*) FROM seed_staging WHERE source=?",
+        (ONSA_SOURCE,)).fetchone()[0]
+    assert count2 == len(rows)
     conn.close()
 
 

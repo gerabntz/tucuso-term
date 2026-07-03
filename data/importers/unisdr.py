@@ -11,7 +11,7 @@ import argparse
 import re
 from pathlib import Path
 
-from data.importers.covenin import verify_sha256, import_rows
+from data.importers.common import verify_sha256, import_rows
 
 SOURCE = "unisdr-2009"
 

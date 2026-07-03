@@ -8,14 +8,15 @@ gated by a 2-human bilingual reviewer quorum.
 - **No accounts for readers or submitters.** Reviewers are the only accounts.
 - **No runtime LLM.** Humans decide correctness.
 - **Anti-surveillance schema.** No field can profile a person.
-- **Offline after first load**, ≤500 KB app shell, dark mode default.
+- **Offline after first load**, ≤500 KB app shell, light editorial theme built
+  for daylight outdoor use.
 - **Open export:** versioned SQLite/CSV/JSON — the future mobile app's content pipeline.
 
 ## Layout
 
 | Dir | Contents |
 |---|---|
-| `data/` | SQLite schema/migrations, seed importers (COVENIN 3661, ONSA), vendored sources |
+| `data/` | SQLite schema/migrations, seed importers (UNISDR 2009, ONSA, original vocabulary), vendored sources |
 | `server/` | Flask app: search API, submissions, revisions, moderation quorum |
 | `web/` | Jinja2 templates, stylesheet, vanilla-JS service worker |
 | `tests/` | pytest suite incl. constraint policy tests (schema shield, budget, lockfile) |
