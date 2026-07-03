@@ -1,9 +1,18 @@
-# Runbook (draft — T14; Angelus executes the deploy, E3)
+# Runbook (T14; first deploy verified live 2026-07-03 — E3 done)
 
 ## First deploy (PythonAnywhere free tier, per ADR-001)
 
-1. Push this repo to GitHub, then on PythonAnywhere: clone it, create a
-   virtualenv (3.12), `pip install -r requirements.txt`.
+1. On PythonAnywhere, open a Bash console (Dashboard → Consoles → Bash).
+   Clone and set up the venv (virtualenvwrapper ships preinstalled):
+   ```bash
+   git clone https://github.com/gerabntz/tucuso-term.git
+   cd tucuso-term
+   mkvirtualenv --python=/usr/bin/python3.12 tucuso-env
+   pip install -r requirements.txt
+   ```
+   (If the repo is ever private: GitHub dropped password auth in 2021, so
+   `git clone` will prompt for credentials — use a fine-grained PAT scoped to
+   this repo as the password.)
 2. Initialize the database once:
    ```bash
    python -c "from server.db import connect, apply_migrations; \
@@ -22,10 +31,34 @@
    Publishing staged seeds is T13: human spot-check, then bulk publish. The
    original-draft + UNISDR rows include `en_equiv`, so T13 publishes ES+EN
    concept pairs.
-4. Web app config: WSGI file points at `server.app:app`. Set env vars
-   `TUCUSO_DB=/home/<user>/tucuso-term/data/tucuso.db` and a strong
-   `TUCUSO_SECRET` (rotating it invalidates reviewer sessions — fine).
-5. Force HTTPS in the PythonAnywhere web tab.
+4. Web app: **Add a new web app → Manual configuration** (not the "Flask"
+   wizard — it scaffolds a template that doesn't match this repo) **→ Python
+   3.12**. Virtualenv field: `tucuso-env` (PA expands it to the full
+   `~/.virtualenvs/...` path). Source code / working directory:
+   `/home/<user>/tucuso-term`.
+
+   WSGI file (linked near the top of the Web tab) — replace the whole file
+   with:
+   ```python
+   import sys, os
+
+   project_home = '/home/<user>/tucuso-term'
+   if project_home not in sys.path:
+       sys.path.insert(0, project_home)
+
+   os.environ['TUCUSO_DB'] = project_home + '/data/tucuso.db'
+   os.environ['TUCUSO_SECRET'] = '<generate: python3 -c "import secrets; print(secrets.token_hex(32))">'
+
+   from server.app import app as application
+   ```
+   Order matters: `server/app.py` runs `app = create_app()` at import time,
+   which reads `os.environ` immediately — so the env vars must be set
+   *before* the `from server.app import ...` line. There's no
+   `python-dotenv` in requirements.txt (kept minimal on purpose), so this
+   WSGI-file assignment is the env var mechanism, not a `.env` file.
+5. Force HTTPS checkbox (bottom of the Web tab), then **Reload** (top of the
+   Web tab — every WSGI/venv/code change needs this to take effect). Verify
+   at `https://<user>.pythonanywhere.com/healthz` → `{"ok": true}`.
 
 ## Reviewers (invite-only, M10)
 
