@@ -130,6 +130,11 @@ def revise(term_id):
                            token=token, error=error)
 
 
+@bp_web.get("/install")
+def install():
+    return render_template("install.html")
+
+
 @bp_web.get("/status")
 def status():
     token = (request.args.get("token") or "").strip()

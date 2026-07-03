@@ -28,7 +28,7 @@ def client(tmp_path):
 
 
 def test_pages_render(client):
-    for path in ("/", "/?q=aplastamiento", "/term/1", "/submit", "/status", "/sw.js"):
+    for path in ("/", "/?q=aplastamiento", "/term/1", "/submit", "/status", "/install", "/sw.js"):
         assert client.get(path).status_code == 200, path
     assert client.get("/term/999").status_code == 404
 

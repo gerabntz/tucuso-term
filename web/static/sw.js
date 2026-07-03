@@ -2,11 +2,11 @@
    glossary snapshot swap + offline navigation fallback. */
 "use strict";
 
-var SHELL_CACHE = "tucuso-shell-v1";
+var SHELL_CACHE = "tucuso-shell-v2";
 var DATA_CACHE = "tucuso-data";
 var SNAPSHOT = "/api/export/terms.json";
 var SHELL = ["/", "/static/style.css", "/static/app.js", "/static/manifest.json",
-             "/static/icon.svg", "/submit", "/status"];
+             "/static/icon.svg", "/submit", "/status", "/install"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(
