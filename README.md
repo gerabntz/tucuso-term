@@ -32,3 +32,11 @@ flask --app server.app run
 ```
 
 Stack rationale: `docs/adr-001-stack.md`.
+
+## License
+
+- **Code**: [GPL-3.0-or-later](LICENSE) — share-alike; derivatives must stay open.
+- **Glossary content & seed data**: [CC BY-SA 4.0](data/LICENSE-DATA) — reuse
+  freely with attribution, share alike. Vendored third-party sources keep their
+  own terms: UNISDR 2009 terminology permits free reuse with attribution; the
+  ONSA public glossary is included as-published for provenance.
