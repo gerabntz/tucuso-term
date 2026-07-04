@@ -46,6 +46,8 @@ def import_rows(db_path, rows, source):
             conn.executemany(
                 "INSERT INTO seed_staging (source, source_ref, lang, text,"
                 " definition, en_equiv, example, category, register, imported_at)"
+                # staging keeps the legacy default category; seed_publish
+                # recategorizes into the current domains on publish
                 " VALUES (?, ?, 'es', ?, ?, ?, ?, 'Protocolos', 'formal', ?)",
                 [(source, r.get("source_ref"), r["text"], r["definition"],
                   r.get("en_equiv"), r.get("example"), now) for r in rows],

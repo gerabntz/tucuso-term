@@ -6,7 +6,7 @@
 
 ## Context
 
-Tucuso-term is an EN<>ES crisis-interpreting glossary for the Venezuela earthquake
+Tucuso-term is a multilingual crisis-interpreting glossary (es-VE pivot) for the Venezuela earthquake
 response: offline-readable PWA, ≤500 KB first load (M6), zero runtime LLM (M3),
 zero third-party runtime origins (N3), SQLite+FTS5 as source of truth, 2-human
 quorum moderation, anti-surveillance schema (M4). Traffic is small (hundreds of

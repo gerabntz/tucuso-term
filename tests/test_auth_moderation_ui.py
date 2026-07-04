@@ -4,14 +4,13 @@ import pytest
 
 from server.app import create_app
 from server.auth import invite_reviewer, issue_magic_link
-from server.db import apply_migrations, connect
+from server.db import connect
 
 
 @pytest.fixture
-def env(tmp_path):
-    db_path = str(tmp_path / "t.db")
+def env(migrated_db):
+    db_path = migrated_db
     conn = connect(db_path)
-    apply_migrations(conn)
     invite_reviewer(conn, "ana")
     invite_reviewer(conn, "beto")
     conn.execute(

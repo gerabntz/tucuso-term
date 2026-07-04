@@ -4,14 +4,12 @@ import io
 import pytest
 
 from server.app import create_app
-from server.db import apply_migrations, connect
+from server.db import connect
 
 
 @pytest.fixture
-def client(tmp_path):
-    db_path = str(tmp_path / "t.db")
-    conn = connect(db_path)
-    apply_migrations(conn)
+def client(migrated_db):
+    conn = connect(migrated_db)
     rows = [
         ("c1", "es", "aplastamiento", "Médico", "síndrome de aplastamiento tras derrumbe", "published"),
         ("c1", "en", "crush injury", "Médico", None, "published"),
@@ -24,7 +22,7 @@ def client(tmp_path):
             (concept, lang, text, cat, example, status))
     conn.commit()
     conn.close()
-    app = create_app({"DATABASE": db_path, "TESTING": True, "SECRET_KEY": "t"})
+    app = create_app({"DATABASE": migrated_db, "TESTING": True, "SECRET_KEY": "t"})
     with app.test_client() as c:
         yield c
 

@@ -11,11 +11,9 @@ REPO_ROOT = Path(__file__).parents[1]
 
 
 @pytest.fixture
-def conn(tmp_path):
-    c = sqlite3.connect(str(tmp_path / "t.db"))
+def conn(migrated_db):
+    c = sqlite3.connect(migrated_db)
     c.row_factory = sqlite3.Row
-    for m in sorted((REPO_ROOT / "data" / "migrations").glob("*.sql")):
-        c.executescript(m.read_text())
     c.executemany(
         "INSERT INTO seed_staging (source, text, definition, category,"
         " register, en_equiv, example) VALUES (?,?,?,?,?,?,?)",

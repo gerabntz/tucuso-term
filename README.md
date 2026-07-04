@@ -1,6 +1,6 @@
 # Tucuso-term
 
-Community EN<>ES crisis-interpreting glossary for the Venezuela earthquake
+Community multilingual crisis-interpreting glossary (Venezuelan Spanish ⇄ EN/FR/PT and regional Spanish variants) for the Venezuela earthquake
 response. Offline-readable PWA where volunteer interpreters search validated
 terminology, submit new terms, and propose corrections — every publication
 gated by a 2-human bilingual reviewer quorum.

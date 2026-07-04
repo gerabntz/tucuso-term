@@ -11,15 +11,8 @@ REPO_ROOT = Path(__file__).parents[1]
 
 
 @pytest.fixture
-def db_path(tmp_path):
-    db_file = tmp_path / 'test.db'
-    conn = sqlite3.connect(str(db_file))
-    migrations = REPO_ROOT / 'data' / 'migrations'
-    for m in sorted(migrations.glob('*.sql')):
-        conn.executescript(m.read_text())
-    conn.commit()
-    conn.close()
-    return str(db_file)
+def db_path(migrated_db):
+    return migrated_db
 
 
 def test_onsa_importer(db_path):

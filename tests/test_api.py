@@ -1,16 +1,12 @@
 import pytest
 
 from server.app import create_app
-from server.db import apply_migrations, connect
+from server.db import connect
 
 
 @pytest.fixture
-def client(tmp_path):
-    db_path = str(tmp_path / "t.db")
-    conn = connect(db_path)
-    apply_migrations(conn)
-    conn.close()
-    app = create_app({"DATABASE": db_path, "TESTING": True, "SECRET_KEY": "t"})
+def client(migrated_db):
+    app = create_app({"DATABASE": migrated_db, "TESTING": True, "SECRET_KEY": "t"})
     with app.test_client() as c:
         yield c
 

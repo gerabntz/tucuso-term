@@ -7,7 +7,7 @@ import uuid
 from flask import Blueprint, current_app, render_template, request
 
 from server import ratelimit, tokens
-from server.api import CATEGORIES, LANGS, public_term
+from server.api import CATEGORIES, LANGS, LANG_LABELS, public_term
 from server.db import get_db
 from server.quorum import PENDING
 from server.search import build_match
@@ -100,7 +100,7 @@ def submit():
                      "community", PENDING))
                 token = tokens.issue(db, "term", cur.lastrowid)
     return render_template("submit.html", categories=CATEGORY_LIST,
-                           token=token, error=error)
+                           langs=LANG_LABELS, token=token, error=error)
 
 
 @bp_web.route("/term/<int:term_id>/revise", methods=["GET", "POST"])

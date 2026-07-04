@@ -9,14 +9,7 @@ Dos revisores bilingües deben aprobarlo antes de publicarse.</p>
   <label>Término <input name="text" maxlength="200" required></label>
   <label>Idioma
     <select name="lang">
-      <option value="es">español (Venezuela)</option>
-      <option value="en">english (US)</option>
-      <option value="fr">français</option>
-      <option value="pt">português (BR)</option>
-      <option value="es-MX">español (México)</option>
-      <option value="es-ES">español (España)</option>
-      <option value="es-SV">español (El Salvador)</option>
-      <option value="es-AR">español (Argentina)</option>
+      {% for code, label in langs.items() %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
     </select>
   </label>
   <label>Categoría

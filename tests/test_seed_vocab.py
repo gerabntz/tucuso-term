@@ -4,22 +4,17 @@ from pathlib import Path
 import pytest
 
 from data.importers.common import verify_sha256, import_rows
-from data.importers.original_vocab import parse_vocab, SOURCE as VOCAB_SOURCE
-from data.importers.original_vocab import main as _  # noqa: F401 (import check)
+from data.importers.original_vocab import main, parse_vocab, SOURCE as VOCAB_SOURCE
 from data.importers.unisdr import parse_unisdr, TERM_MAP, SOURCE as UNISDR_SOURCE
+
+assert callable(main)  # the module must stay runnable as a CLI importer
 
 REPO_ROOT = Path(__file__).parents[1]
 
 
 @pytest.fixture
-def db_path(tmp_path):
-    db_file = tmp_path / "t.db"
-    conn = sqlite3.connect(str(db_file))
-    for m in sorted((REPO_ROOT / "data" / "migrations").glob("*.sql")):
-        conn.executescript(m.read_text())
-    conn.commit()
-    conn.close()
-    return str(db_file)
+def db_path(migrated_db):
+    return migrated_db
 
 
 def test_original_vocab_pinned_and_complete(db_path):

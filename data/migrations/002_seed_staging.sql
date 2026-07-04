@@ -1,8 +1,7 @@
 -- Seed staging (F5): importers write here; nothing reaches `terms` without
 -- the T13 human spot-check + bulk publish step.
--- NOTE (E3 escalation, open): seed sources carry a `definition` field that the
--- published `terms` schema does not yet hold. Decide before T13 whether to add
--- terms.definition via a future migration or map definitions into `example`.
+-- NOTE (E3, resolved): `definition` moved into the published schema via
+-- migration 006; the extra ficha fields arrived in 007/008.
 CREATE TABLE seed_staging (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     source TEXT NOT NULL,           -- e.g. 'unisdr-2009', 'onsa-glosario'

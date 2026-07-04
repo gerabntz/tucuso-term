@@ -4,17 +4,15 @@ from pathlib import Path
 import pytest
 
 from server.app import create_app
-from server.db import apply_migrations, connect
+from server.db import connect
 
 REPO_ROOT = Path(__file__).parents[1]
 BUDGET_BYTES = 500 * 1024  # M6 / AC4
 
 
 @pytest.fixture
-def client(tmp_path):
-    db_path = str(tmp_path / "t.db")
-    conn = connect(db_path)
-    apply_migrations(conn)
+def client(migrated_db):
+    conn = connect(migrated_db)
     conn.execute(
         "INSERT INTO terms (concept_id, lang, text, category, register, source, status)"
         " VALUES ('c1','es','aplastamiento','Médico','formal','seed','published')")
@@ -22,7 +20,7 @@ def client(tmp_path):
         "INSERT INTO terms (concept_id, lang, text, category, register, source, status)"
         " VALUES ('c1','en','crush injury','Médico','formal','seed','published')")
     conn.commit(); conn.close()
-    app = create_app({"DATABASE": db_path, "TESTING": True, "SECRET_KEY": "t"})
+    app = create_app({"DATABASE": migrated_db, "TESTING": True, "SECRET_KEY": "t"})
     with app.test_client() as c:
         yield c
 
@@ -104,13 +102,12 @@ def test_saved_page_is_client_side_only(client):
     assert "fetch(" not in fav_section and "XMLHttpRequest" not in fav_section
 
 
-def test_littre_presentation(tmp_path):
+def test_littre_presentation(migrated_db):
     """Le Littré reference: ling_info inline with the term, pronunciation as
     its own section, multi-line definitions render as numbered senses,
     automatic dark mode."""
-    db_path = str(tmp_path / "t.db")
+    db_path = migrated_db
     conn = connect(db_path)
-    apply_migrations(conn)
     conn.execute(
         "INSERT INTO terms (concept_id, lang, text, definition, category,"
         " register, ling_info, pronunciation, source, status) VALUES"

@@ -22,7 +22,14 @@ CATEGORIES = {"Medicina general", "Seguridad alimentaria", "Urbanismo",
               "División político-administrativa y geografía nacional"}
 
 # es = español (Venezuela), the pivot language; every other code pairs with it.
-LANGS = ("es", "en", "fr", "pt", "es-MX", "es-ES", "es-SV", "es-AR")
+# Single source of truth: validation here, the submit form renders from it.
+LANG_LABELS = {
+    "es": "español (Venezuela)", "en": "english (US)", "fr": "français",
+    "pt": "português (BR)", "es-MX": "español (México)",
+    "es-ES": "español (España)", "es-SV": "español (El Salvador)",
+    "es-AR": "español (Argentina)",
+}
+LANGS = tuple(LANG_LABELS)
 
 
 def public_term(row):

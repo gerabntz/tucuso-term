@@ -1,6 +1,6 @@
 # Design-system prompt — Tucuso-term, warm terracotta theme v3 (paste whole into Claude design)
 
-You are producing high-fidelity UI for **Tucuso-term**, an offline-capable EN⇄ES emergency glossary used by volunteer interpreters in the Venezuela earthquake response, mostly **outdoors in daylight** on inexpensive Android phones. Mood: **a well-made reference book** — think field manual meets elegant dictionary: quiet, warm, typographic, authoritative. Explicitly NOT: app-like, gamified, neon, glossy, rounded, playful.
+You are producing high-fidelity UI for **Tucuso-term**, an offline-capable multilingual emergency glossary (Venezuelan Spanish pivot ⇄ EN/FR/PT and regional Spanish variants) used by volunteer interpreters in the Venezuela earthquake response, mostly **outdoors in daylight** on inexpensive Android phones. Mood: **a well-made reference book** — think field manual meets elegant dictionary: quiet, warm, typographic, authoritative. Explicitly NOT: app-like, gamified, neon, glossy, playful. (Soft radii are in: pill actions, rounded cards — see the radius hierarchy below.)
 
 The design system below is **decided, not suggested**. Apply it exactly; your creative freedom is in composition, hierarchy, and microcopy polish — not in tokens.
 
