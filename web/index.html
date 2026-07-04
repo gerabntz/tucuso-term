@@ -15,11 +15,11 @@ para emergencias y primeros auxilios.</p>
 <ul id="results" class="results">
   {% for t in results %}
   <li>
-    <a href="/term/{{ t.id }}"><strong>{{ t.text }}</strong></a>
+    <a href="/term/{{ t.id }}"><strong>{{ t.text }}</strong></a>{% if t.ling_info %} <span class="ling">{{ t.ling_info }}</span>{% endif %}
     <span class="lang">{{ t.lang }}</span>
     {% for c in t.counterparts %}<span class="counterpart">⇄ {{ c.text }} ({{ c.lang }})</span>{% endfor %}
     <span class="meta">{{ t.category }}{% if t.zone %} · {{ t.zone }}{% endif %}</span>
-    {% if t.definition %}<p class="definition">{{ t.definition|truncate(160) }}</p>{% endif %}
+    {% if t.definition %}<p class="definition">{{ t.definition.split('\n')[0]|truncate(160) }}</p>{% endif %}
   </li>
   {% endfor %}
 </ul>

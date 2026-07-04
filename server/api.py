@@ -40,6 +40,7 @@ def public_term(row):
         "variations": row["variations"],
         "contrast_note": row["contrast_note"],
         "ling_info": row["ling_info"],
+        "pronunciation": row["pronunciation"],
         "example": row["example"],
         "source": row["source"],
         "status": row["status"],
@@ -84,14 +85,14 @@ def submit_term():
         cur = db.execute(
             "INSERT INTO terms (concept_id, lang, text, definition, category,"
             " subdomain, register, zone, variations, contrast_note, ling_info,"
-            " example, source, status)"
-            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            " pronunciation, example, source, status)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (payload.get("concept_id") or uuid.uuid4().hex,
              payload["lang"], payload["text"], payload.get("definition"),
              payload["category"], payload.get("subdomain"),
              payload.get("register", "neutral"), payload.get("zone"),
              payload.get("variations"), payload.get("contrast_note"),
-             payload.get("ling_info"),
+             payload.get("ling_info"), payload.get("pronunciation"),
              payload.get("example"), payload.get("source", "community"),
              PENDING),
         )

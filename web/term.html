@@ -2,11 +2,15 @@
 {% block title %}{{ term.text }} — Tucuso-term{% endblock %}
 {% block content %}
 <article class="term" data-id="{{ term.id }}" data-text="{{ term.text }}" data-lang="{{ term.lang }}">
-  <h1>{{ term.text }} <span class="lang">{{ term.lang }}</span></h1>
+  <h1>{{ term.text }}{% if term.ling_info %} <span class="ling">{{ term.ling_info }}</span>{% endif %} <span class="lang">{{ term.lang }}</span></h1>
+  {% if term.pronunciation %}<p class="pronunciation">{{ term.pronunciation }}</p>{% endif %}
   {% for c in counterparts %}
   <p class="counterpart big">⇄ <strong>{{ c.text }}</strong> <span class="lang">{{ c.lang }}</span></p>
   {% endfor %}
-  {% if term.definition %}<p class="definition">{{ term.definition }}</p>{% endif %}
+  {% set senses = (term.definition or '').splitlines() | map('trim') | reject('equalto', '') | list %}
+  {% if senses | length > 1 %}
+  <ol class="senses">{% for s in senses %}<li>{{ s }}</li>{% endfor %}</ol>
+  {% elif senses %}<p class="definition">{{ senses[0] }}</p>{% endif %}
   {% if term.register == 'vulgar' %}
   <div class="caution danger"><b>Registro vulgar</b>Úselo solo si el interlocutor lo usa primero; puede ofender.</div>
   {% endif %}

@@ -41,11 +41,11 @@
    categories and republish clean (bootstrap era only — refuses if any
    revision exists): `python -m server.seed_publish data/tucuso.db --reset`.
    On an existing database, apply any migration added after it was created
-   (each file runs once, in order — e.g. 006, then 007):
+   (each file runs once, in order — e.g. 006, 007, then 008):
    ```bash
    python -c "import sqlite3; \
               sqlite3.connect('data/tucuso.db').executescript( \
-              open('data/migrations/007_ficha_fields.sql').read())"
+              open('data/migrations/008_pronunciation.sql').read())"
    ```
 5. Web app: **Add a new web app → Manual configuration** (not the "Flask"
    wizard — it scaffolds a template that doesn't match this repo) **→ Python

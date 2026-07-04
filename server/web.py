@@ -86,15 +86,17 @@ def submit():
                 cur = db.execute(
                     "INSERT INTO terms (concept_id, lang, text, definition,"
                     " category, subdomain, register, zone, variations,"
-                    " contrast_note, ling_info, example, source, status)"
-                    " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    " contrast_note, ling_info, pronunciation, example,"
+                    " source, status)"
+                    " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (uuid.uuid4().hex, f["lang"], f["text"].strip(),
                      f.get("definition") or None,
                      f["category"], f.get("subdomain") or None,
                      f.get("register", "neutral"), f.get("zone") or None,
                      f.get("variations") or None,
                      f.get("contrast_note") or None,
-                     f.get("ling_info") or None, f.get("example") or None,
+                     f.get("ling_info") or None,
+                     f.get("pronunciation") or None, f.get("example") or None,
                      "community", PENDING))
                 token = tokens.issue(db, "term", cur.lastrowid)
     return render_template("submit.html", categories=CATEGORY_LIST,

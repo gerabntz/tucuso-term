@@ -14,7 +14,7 @@ from server.quorum import resolve, PENDING, PUBLISHED
 
 REVISABLE_FIELDS = {"text", "definition", "category", "subdomain", "register",
                     "zone", "variations", "contrast_note", "ling_info",
-                    "example", "source"}
+                    "pronunciation", "example", "source"}
 
 
 class DuplicateVote(Exception):
@@ -82,15 +82,15 @@ def _apply_revision(conn, revision):
     fields = {k: base[k] for k in
               ("concept_id", "lang", "text", "definition", "category",
                "subdomain", "register", "zone", "variations", "contrast_note",
-               "ling_info", "example", "audio_ref", "source")}
+               "ling_info", "pronunciation", "example", "audio_ref", "source")}
     fields.update(proposed)
     conn.execute(
         "INSERT INTO terms (concept_id, lang, text, definition, category,"
         " subdomain, register, zone, variations, contrast_note, ling_info,"
-        " example, audio_ref, source, status) VALUES"
+        " pronunciation, example, audio_ref, source, status) VALUES"
         " (:concept_id, :lang, :text, :definition, :category, :subdomain,"
         "  :register, :zone, :variations, :contrast_note, :ling_info,"
-        "  :example, :audio_ref, :source, 'published')",
+        "  :pronunciation, :example, :audio_ref, :source, 'published')",
         fields,
     )
 

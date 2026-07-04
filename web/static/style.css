@@ -77,10 +77,16 @@ label { display: grid; gap: .3rem; color: var(--text); font-weight: 600; font-si
   border: 1px solid var(--line); border-radius: 3px; padding: .1rem .35rem;
   margin-left: .4rem; vertical-align: middle;
 }
+/* Grammatical abbreviation inline with the term, dictionary-style ("s. f.") */
+.ling { color: var(--muted); font: italic 400 .85rem/1 var(--serif); margin-left: .15rem; }
 .counterpart { display: block; color: var(--ok); font: 700 1.3rem/1.3 var(--serif); }
 .counterpart.big { font-size: 1.5rem; }
 .meta { display: block; color: var(--muted); font-size: .8rem; margin-top: .4rem; }
 .definition { color: var(--text); margin-top: .4rem; line-height: 1.5; }
+.senses { margin: .4rem 0 0; padding-left: 1.4rem; line-height: 1.5; }
+.senses li { margin-bottom: .35rem; }
+.senses li::marker { color: var(--accent); font-weight: 700; }
+.pronunciation { color: var(--muted); font: italic 400 1rem/1.3 var(--serif); letter-spacing: .04em; margin: .1rem 0 .4rem; }
 
 .term h1 { font-size: 1.9rem; margin-bottom: .2rem; }
 .term dl { display: grid; grid-template-columns: auto 1fr; gap: .5rem .9rem; padding-top: .8rem; border-top: 1px solid var(--line); }
@@ -130,3 +136,21 @@ code {
 }
 
 @media (max-width: 34rem) { #search-form { grid-template-columns: 1fr; } }
+
+/* Dark mode (Le Littré reference): automatic via system preference. Warm dark
+   tokens; light stays the default for daylight field use. AA-checked. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #201d1a; --surface: #2a2622; --surface-2: #34302b; --line: #443f38;
+    --text: #ece7e0; --muted: #aca396;
+    --accent: #e57a58; --accent-light: #3d2b23; --accent-ink: #201d1a;
+    --ok: #7dbb9a; --ok-bg: #23342b;
+    --warn: #d4a656; --warn-bg: #383021;
+    --err: #e08a7a; --err-bg: #3d2823;
+  }
+  .results li, .notice, .receipt { box-shadow: none; }
+  button { box-shadow: none; }
+  input::placeholder { color: #8f867e; }
+  /* the data-URI's hardcoded light fills would vanish on the dark bg */
+  .wave-deco { opacity: .5; filter: brightness(1.9); }
+}

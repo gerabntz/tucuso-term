@@ -102,3 +102,32 @@ def test_saved_page_is_client_side_only(client):
     # the favorites code must not talk to the network
     fav_section = js[js.index("tucuso-favs") - 2000: js.index("Offline search")]
     assert "fetch(" not in fav_section and "XMLHttpRequest" not in fav_section
+
+
+def test_littre_presentation(tmp_path):
+    """Le Littré reference: ling_info inline with the term, pronunciation as
+    its own section, multi-line definitions render as numbered senses,
+    automatic dark mode."""
+    db_path = str(tmp_path / "t.db")
+    conn = connect(db_path)
+    apply_migrations(conn)
+    conn.execute(
+        "INSERT INTO terms (concept_id, lang, text, definition, category,"
+        " register, ling_info, pronunciation, source, status) VALUES"
+        " ('c9','es','triaje','Clasificación de víctimas.\nPunto donde se"
+        " realiza.','Medicina general','formal','sust. m.',"
+        " 'tri-a-je','seed','published')")
+    conn.commit()
+    tid = conn.execute("SELECT id FROM terms WHERE text='triaje'").fetchone()[0]
+    conn.close()
+    app = create_app({"DATABASE": db_path, "TESTING": True, "SECRET_KEY": "t"})
+    client = app.test_client()
+    html = client.get(f"/term/{tid}").get_data(as_text=True)
+    assert '<span class="ling">sust. m.</span>' in html
+    assert 'class="pronunciation"' in html
+    assert '<ol class="senses">' in html and html.count("<li>") >= 2
+    results = client.get("/?q=triaje").get_data(as_text=True)
+    assert '<span class="ling">sust. m.</span>' in results
+    assert "Punto donde" not in results  # list shows first sense only
+    css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
+    assert "prefers-color-scheme: dark" in css
