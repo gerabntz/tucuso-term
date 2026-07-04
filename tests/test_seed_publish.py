@@ -3,7 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from server.seed_publish import publish_seeds
+from data.importers.domains import DOMAIN_MAP, DEFAULT_DOMAIN
+from server.api import CATEGORIES
+from server.seed_publish import publish_seeds, reset_terms
 
 REPO_ROOT = Path(__file__).parents[1]
 
@@ -54,6 +56,33 @@ def test_dry_run_writes_nothing(conn, capsys):
     assert published == 2
     assert conn.execute("SELECT COUNT(*) FROM terms").fetchone()[0] == 0
     assert "réplica ⇄ aftershock" in capsys.readouterr().out
+
+
+def test_publish_recategorizes_into_current_domains(conn):
+    assert set(DOMAIN_MAP.values()) <= CATEGORIES
+    assert DEFAULT_DOMAIN in CATEGORIES
+    publish_seeds(conn)
+    cats = {r[0] for r in conn.execute("SELECT DISTINCT category FROM terms")}
+    assert cats <= CATEGORIES  # nothing publishes with a stale category
+
+
+def test_reset_wipes_then_republish(conn):
+    publish_seeds(conn)
+    reset_terms(conn)
+    assert conn.execute("SELECT COUNT(*) FROM terms").fetchone()[0] == 0
+    published, skipped = publish_seeds(conn)
+    assert (published, skipped) == (2, 0)
+
+
+def test_reset_refuses_when_history_exists(conn):
+    publish_seeds(conn)
+    term_id = conn.execute("SELECT id FROM terms LIMIT 1").fetchone()[0]
+    conn.execute("INSERT INTO revisions (term_id, proposed_fields, reason,"
+                 " status) VALUES (?, '{}', 'typo', 'pending_review')",
+                 (term_id,))
+    conn.commit()
+    with pytest.raises(sqlite3.IntegrityError, match="immutable"):
+        reset_terms(conn)
 
 
 def test_definition_is_searchable(conn):

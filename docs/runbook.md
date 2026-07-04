@@ -36,6 +36,10 @@
    python -m server.seed_publish data/tucuso.db             # publish
    ```
    Idempotent: re-runs skip rows already published from the same source.
+   Each term is recategorized on publish into the team's 5 domains
+   (`data/importers/domains.py`). To wipe terms published under older
+   categories and republish clean (bootstrap era only — refuses if any
+   revision exists): `python -m server.seed_publish data/tucuso.db --reset`.
    On an existing database, apply any migration added after it was created
    (each file runs once, in order — e.g. 006, then 007):
    ```bash

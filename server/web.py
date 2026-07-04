@@ -26,11 +26,6 @@ def _throttled(db):
 def index():
     q = (request.args.get("q") or "").strip()
     category = request.args.get("category") or ""
-    # Filter offers the team's current domains plus any category actually
-    # published (terms predating the 2026-07 domain list stay findable).
-    live = [r[0] for r in get_db().execute(
-        "SELECT DISTINCT category FROM terms WHERE status='published'")]
-    filter_cats = sorted(CATEGORIES.union(live))
     results = []
     if q and len(q) <= 100:
         match = build_match(q)
@@ -51,7 +46,7 @@ def index():
                     (row["concept_id"], row["lang"])).fetchall()]
                 results.append(d)
     return render_template("index.html", q=q, category=category,
-                           categories=filter_cats, results=results)
+                           categories=CATEGORY_LIST, results=results)
 
 
 @bp_web.get("/term/<int:term_id>")
