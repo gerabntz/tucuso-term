@@ -28,10 +28,22 @@
    repo — license-encumbered; replaced by the original-wording vocabulary above.
    `data/sources/covenin-3661-fingerprint.txt` keeps shingle hashes so CI can
    prove the original definitions copy no COVENIN wording.)
-   Publishing staged seeds is T13: human spot-check, then bulk publish. The
-   original-draft + UNISDR rows include `en_equiv`, so T13 publishes ES+EN
-   concept pairs.
-4. Web app: **Add a new web app → Manual configuration** (not the "Flask"
+4. Publish the staged seeds (T13). Spot-check the list first, then bulk
+   publish — rows with `en_equiv` become ES+EN concept pairs sharing a
+   concept_id:
+   ```bash
+   python -m server.seed_publish data/tucuso.db --dry-run   # spot-check
+   python -m server.seed_publish data/tucuso.db             # publish
+   ```
+   Idempotent: re-runs skip rows already published from the same source.
+   On a database created before migration 006 (`terms.definition`), apply
+   it first:
+   ```bash
+   python -c "import sqlite3; \
+              sqlite3.connect('data/tucuso.db').executescript( \
+              open('data/migrations/006_terms_definition.sql').read())"
+   ```
+5. Web app: **Add a new web app → Manual configuration** (not the "Flask"
    wizard — it scaffolds a template that doesn't match this repo) **→ Python
    3.12**. Virtualenv field: `tucuso-env` (PA expands it to the full
    `~/.virtualenvs/...` path). Source code / working directory:
@@ -56,7 +68,7 @@
    *before* the `from server.app import ...` line. There's no
    `python-dotenv` in requirements.txt (kept minimal on purpose), so this
    WSGI-file assignment is the env var mechanism, not a `.env` file.
-5. Force HTTPS checkbox (bottom of the Web tab), then **Reload** (top of the
+6. Force HTTPS checkbox (bottom of the Web tab), then **Reload** (top of the
    Web tab — every WSGI/venv/code change needs this to take effect). Verify
    at `https://<user>.pythonanywhere.com/healthz` → `{"ok": true}`.
 

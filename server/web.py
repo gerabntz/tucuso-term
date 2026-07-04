@@ -84,9 +84,11 @@ def submit():
         else:
             with db:
                 cur = db.execute(
-                    "INSERT INTO terms (concept_id, lang, text, category, register,"
-                    " zone, example, source, status) VALUES (?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO terms (concept_id, lang, text, definition,"
+                    " category, register, zone, example, source, status)"
+                    " VALUES (?,?,?,?,?,?,?,?,?,?)",
                     (uuid.uuid4().hex, f["lang"], f["text"].strip(),
+                     f.get("definition") or None,
                      f["category"], f.get("register", "neutral"),
                      f.get("zone") or None, f.get("example") or None,
                      "community", PENDING))

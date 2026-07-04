@@ -6,6 +6,7 @@
   {% for c in counterparts %}
   <p class="counterpart big">⇄ <strong>{{ c.text }}</strong> <span class="lang">{{ c.lang }}</span></p>
   {% endfor %}
+  {% if term.definition %}<p class="definition">{{ term.definition }}</p>{% endif %}
   <dl>
     <dt>Categoría</dt><dd>{{ term.category }}</dd>
     <dt>Registro</dt><dd>{{ term.register }}</dd>

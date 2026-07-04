@@ -26,6 +26,7 @@ def public_term(row):
         "concept_id": row["concept_id"],
         "lang": row["lang"],
         "text": row["text"],
+        "definition": row["definition"],
         "category": row["category"],
         "register": row["register"],
         "zone": row["zone"],
@@ -71,10 +72,12 @@ def submit_term():
 
     with db:
         cur = db.execute(
-            "INSERT INTO terms (concept_id, lang, text, category, register, zone,"
-            " example, source, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO terms (concept_id, lang, text, definition, category,"
+            " register, zone, example, source, status)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (payload.get("concept_id") or uuid.uuid4().hex,
-             payload["lang"], payload["text"], payload["category"],
+             payload["lang"], payload["text"], payload.get("definition"),
+             payload["category"],
              payload.get("register", "neutral"), payload.get("zone"),
              payload.get("example"), payload.get("source", "community"),
              PENDING),

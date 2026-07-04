@@ -14,8 +14,8 @@ from server.db import get_db
 
 bp_export = Blueprint("export", __name__, url_prefix="/api/export")
 
-CSV_FIELDS = ["id", "concept_id", "lang", "text", "category", "register",
-              "zone", "example", "source", "date"]
+CSV_FIELDS = ["id", "concept_id", "lang", "text", "definition", "category",
+              "register", "zone", "example", "source", "date"]
 
 
 def _published(db):

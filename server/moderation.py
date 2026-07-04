@@ -12,7 +12,8 @@ import sqlite3
 
 from server.quorum import resolve, PENDING, PUBLISHED
 
-REVISABLE_FIELDS = {"text", "category", "register", "zone", "example", "source"}
+REVISABLE_FIELDS = {"text", "definition", "category", "register", "zone",
+                    "example", "source"}
 
 
 class DuplicateVote(Exception):
@@ -78,13 +79,13 @@ def _apply_revision(conn, revision):
     if illegal:
         raise VoteError(f"revision proposes non-revisable fields: {sorted(illegal)}")
     fields = {k: base[k] for k in
-              ("concept_id", "lang", "text", "category", "register",
-               "zone", "example", "audio_ref", "source")}
+              ("concept_id", "lang", "text", "definition", "category",
+               "register", "zone", "example", "audio_ref", "source")}
     fields.update(proposed)
     conn.execute(
-        "INSERT INTO terms (concept_id, lang, text, category, register, zone,"
-        " example, audio_ref, source, status) VALUES"
-        " (:concept_id, :lang, :text, :category, :register, :zone,"
+        "INSERT INTO terms (concept_id, lang, text, definition, category,"
+        " register, zone, example, audio_ref, source, status) VALUES"
+        " (:concept_id, :lang, :text, :definition, :category, :register, :zone,"
         "  :example, :audio_ref, :source, 'published')",
         fields,
     )

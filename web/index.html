@@ -17,6 +17,7 @@
     <span class="lang">{{ t.lang }}</span>
     {% for c in t.counterparts %}<span class="counterpart">⇄ {{ c.text }} ({{ c.lang }})</span>{% endfor %}
     <span class="meta">{{ t.category }}{% if t.zone %} · {{ t.zone }}{% endif %}</span>
+    {% if t.definition %}<p class="definition">{{ t.definition|truncate(160) }}</p>{% endif %}
   </li>
   {% endfor %}
 </ul>
