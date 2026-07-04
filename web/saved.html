@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Guardados — Tucuso-term{% endblock %}
+{% block content %}
+<h1>Guardados</h1>
+<p class="search-sub">Sus términos favoritos y los últimos consultados.
+Se guardan solo en este dispositivo — nunca se envían al servidor.</p>
+<noscript><p class="meta">Esta página necesita JavaScript; el resto de la
+aplicación funciona sin él.</p></noscript>
+<h2>★ Favoritos</h2>
+<ul id="fav-list" class="results"></ul>
+<h2>Consultados recientemente</h2>
+<ul id="hist-list" class="results"></ul>
+{% endblock %}

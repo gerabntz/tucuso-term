@@ -135,6 +135,13 @@ def revise(term_id):
                            token=token, error=error)
 
 
+@bp_web.get("/guardados")
+def saved():
+    """Favorites/history shell — content lives in localStorage, client-side
+    only (M4/M9: the server never sees what anyone saves or reads)."""
+    return render_template("saved.html")
+
+
 @bp_web.get("/install")
 def install():
     return render_template("install.html")

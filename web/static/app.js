@@ -21,6 +21,85 @@
   // Ask the browser not to evict our offline glossary under storage pressure (M11)
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
+  // Favorites + history — device-local only (localStorage); nothing is ever
+  // sent to the server, consistent with the anti-surveillance schema (M4/M9).
+  var HIST_MAX = 30;
+
+  function load(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || []; }
+    catch (e) { return []; }
+  }
+  function save(key, list) {
+    try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {}
+  }
+
+  var article = document.querySelector("article.term[data-id]");
+  if (article) {
+    var entry = {
+      id: article.getAttribute("data-id"),
+      text: article.getAttribute("data-text"),
+      lang: article.getAttribute("data-lang"),
+      cp: (document.querySelector(".counterpart.big") || {}).textContent || ""
+    };
+    // history: most recent first, de-duplicated, capped
+    var hist = load("tucuso-hist").slice(0, HIST_MAX)
+      .filter(function (h) { return h.id !== entry.id; });
+    hist.unshift(entry);
+    save("tucuso-hist", hist.slice(0, HIST_MAX));
+
+    // favorite toggle button (JS-only enhancement)
+    var favs = load("tucuso-favs");
+    function isFav() {
+      return favs.some(function (f) { return f.id === entry.id; });
+    }
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "fav-btn" + (isFav() ? " on" : "");
+    btn.textContent = isFav() ? "★ Guardado" : "☆ Guardar";
+    btn.addEventListener("click", function () {
+      favs = isFav()
+        ? favs.filter(function (f) { return f.id !== entry.id; })
+        : [entry].concat(favs);
+      save("tucuso-favs", favs);
+      btn.className = "fav-btn" + (isFav() ? " on" : "");
+      btn.textContent = isFav() ? "★ Guardado" : "☆ Guardar";
+    });
+    article.insertBefore(btn, article.querySelector("dl"));
+  }
+
+  // /guardados page: render both lists from localStorage
+  function fillList(ulId, items, emptyMsg) {
+    var ul = document.getElementById(ulId);
+    if (!ul) return false;
+    ul.innerHTML = "";
+    if (!items.length) {
+      var p = document.createElement("li");
+      p.className = "meta";
+      p.textContent = emptyMsg;
+      ul.appendChild(p);
+      return true;
+    }
+    items.forEach(function (t) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "/term/" + t.id;
+      var strong = document.createElement("strong");
+      strong.textContent = t.text;
+      a.appendChild(strong);
+      li.appendChild(a);
+      if (t.cp) {
+        var span = document.createElement("span");
+        span.className = "counterpart";
+        span.textContent = t.cp;
+        li.appendChild(span);
+      }
+      ul.appendChild(li);
+    });
+    return true;
+  }
+  fillList("fav-list", load("tucuso-favs"), "Aún no ha guardado términos.");
+  fillList("hist-list", load("tucuso-hist"), "Aún no ha consultado términos.");
+
   // Offline search fallback: intercept the search form and query the cached
   // snapshot if the server is unreachable.
   var form = document.getElementById("search-form");

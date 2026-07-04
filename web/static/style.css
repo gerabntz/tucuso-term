@@ -92,6 +92,10 @@ label { display: grid; gap: .3rem; color: var(--text); font-weight: 600; font-si
   padding: .6rem 1.4rem; text-decoration: none; font-weight: 600;
 }
 
+/* Favorite toggle (JS-only enhancement on term pages) */
+.fav-btn { background: none; border: 1px solid var(--accent); color: var(--accent); box-shadow: none; margin: .6rem 0; }
+.fav-btn.on { background: var(--accent-light); }
+
 /* Caution strips: 3px left border, rounded right edge; never dismissible */
 .caution { padding: .8rem 1rem; margin: .8rem 0; border-left: 3px solid; border-radius: 0 8px 8px 0; font-size: .92rem; }
 .caution.danger { border-color: var(--err); background: var(--err-bg); }

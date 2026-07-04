@@ -88,3 +88,17 @@ def test_first_load_budget(client):
         total += len(client.get(asset).get_data())
     assert total < BUDGET_BYTES, f"first load is {total} bytes"
     assert total < 50 * 1024  # we should be nowhere near the cap
+
+
+def test_saved_page_is_client_side_only(client):
+    """Favorites/history live in localStorage (M4/M9): the page is a static
+    shell, part of the offline app shell, and app.js never POSTs the data."""
+    html = client.get("/guardados").get_data(as_text=True)
+    assert 'id="fav-list"' in html and 'id="hist-list"' in html
+    assert "este dispositivo" in html
+    js = (REPO_ROOT / "web" / "static" / "app.js").read_text()
+    assert "tucuso-favs" in js and "tucuso-hist" in js
+    assert "/guardados" in (REPO_ROOT / "web" / "static" / "sw.js").read_text()
+    # the favorites code must not talk to the network
+    fav_section = js[js.index("tucuso-favs") - 2000: js.index("Offline search")]
+    assert "fetch(" not in fav_section and "XMLHttpRequest" not in fav_section
