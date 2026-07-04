@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Buscar terminología de emergencia</h1>
+<p class="search-sub">Encuentra el término que necesitas en la base validada
+para emergencias y primeros auxilios.</p>
 <form id="search-form" action="/" method="get" autocomplete="off">
   <input id="q" name="q" type="search" placeholder="ej.: aplastamiento, crush injury…"
          value="{{ q or '' }}" maxlength="100" required>
@@ -22,4 +24,5 @@
   {% endfor %}
 </ul>
 {% if q and not results %}<p>Sin resultados para «{{ q }}». <a href="/submit">¿Proponer este término?</a></p>{% endif %}
+{% if not q %}<div class="wave-deco"></div>{% endif %}
 {% endblock %}

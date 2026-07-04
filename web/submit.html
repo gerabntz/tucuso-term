@@ -8,7 +8,16 @@ Dos revisores bilingües deben aprobarlo antes de publicarse.</p>
   <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <label>Término <input name="text" maxlength="200" required></label>
   <label>Idioma
-    <select name="lang"><option value="es">español</option><option value="en">english</option></select>
+    <select name="lang">
+      <option value="es">español (Venezuela)</option>
+      <option value="en">english (US)</option>
+      <option value="fr">français</option>
+      <option value="pt">português (BR)</option>
+      <option value="es-MX">español (México)</option>
+      <option value="es-ES">español (España)</option>
+      <option value="es-SV">español (El Salvador)</option>
+      <option value="es-AR">español (Argentina)</option>
+    </select>
   </label>
   <label>Categoría
     <select name="category" required>
@@ -27,7 +36,11 @@ Dos revisores bilingües deben aprobarlo antes de publicarse.</p>
       <option>Cordillera</option><option>Llanos</option>
     </select>
   </label>
-  <label>Definición (opcional) <textarea name="definition" maxlength="1000"></textarea></label>
+  <label>Subdominio (opcional) <input name="subdomain" maxlength="100"></label>
+  <label>Definición contextual (opcional) <textarea name="definition" maxlength="1000"></textarea></label>
+  <label>Variaciones localizadas (opcional) <input name="variations" maxlength="300"></label>
+  <label>No confundir con (opcional) <input name="contrast_note" maxlength="300"></label>
+  <label>Información lingüística (opcional) <input name="ling_info" maxlength="200" placeholder="sust. f., verbo, siglas…"></label>
   <label>Ejemplo de uso (opcional) <textarea name="example" maxlength="500"></textarea></label>
   <button type="submit">Enviar a revisión</button>
 </form>

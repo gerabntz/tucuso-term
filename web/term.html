@@ -7,10 +7,20 @@
   <p class="counterpart big">⇄ <strong>{{ c.text }}</strong> <span class="lang">{{ c.lang }}</span></p>
   {% endfor %}
   {% if term.definition %}<p class="definition">{{ term.definition }}</p>{% endif %}
+  {% if term.register == 'vulgar' %}
+  <div class="caution danger"><b>Registro vulgar</b>Úselo solo si el interlocutor lo usa primero; puede ofender.</div>
+  {% endif %}
+  {% if term.contrast_note %}
+  <div class="caution danger"><b>No confundir</b>{{ term.contrast_note }}</div>
+  {% endif %}
+  {% if term.zone %}
+  <div class="caution warn"><b>Uso regional — {{ term.zone }}</b>Verifique con el interlocutor antes de usarlo.</div>
+  {% endif %}
   <dl>
-    <dt>Categoría</dt><dd>{{ term.category }}</dd>
+    <dt>Categoría</dt><dd>{{ term.category }}{% if term.subdomain %} · {{ term.subdomain }}{% endif %}</dd>
     <dt>Registro</dt><dd>{{ term.register }}</dd>
-    {% if term.zone %}<dt>Zona</dt><dd>{{ term.zone }} — <em>uso regional, verifique con el interlocutor</em></dd>{% endif %}
+    {% if term.variations %}<dt>Variaciones</dt><dd>{{ term.variations }}</dd>{% endif %}
+    {% if term.ling_info %}<dt>Inf. lingüística</dt><dd>{{ term.ling_info }}</dd>{% endif %}
     {% if term.example %}<dt>Ejemplo</dt><dd>{{ term.example }}</dd>{% endif %}
     <dt>Fuente</dt><dd>{{ term.source }}</dd>
     <dt>Validación</dt><dd>publicado ({{ term.date }}){% if versions > 1 %} · {{ versions }} versiones{% endif %}</dd>

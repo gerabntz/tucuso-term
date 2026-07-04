@@ -1,4 +1,4 @@
-# Design-system prompt — Tucuso-term, light editorial theme (paste whole into Claude design)
+# Design-system prompt — Tucuso-term, warm terracotta theme v3 (paste whole into Claude design)
 
 You are producing high-fidelity UI for **Tucuso-term**, an offline-capable EN⇄ES emergency glossary used by volunteer interpreters in the Venezuela earthquake response, mostly **outdoors in daylight** on inexpensive Android phones. Mood: **a well-made reference book** — think field manual meets elegant dictionary: quiet, warm, typographic, authoritative. Explicitly NOT: app-like, gamified, neon, glossy, rounded, playful.
 
@@ -10,22 +10,22 @@ The design system below is **decided, not suggested**. Apply it exactly; your cr
 
 | Token | Value | Use — and nothing else |
 |---|---|---|
-| `--bg` | `#f6f4ef` | page background (warm paper; never stark white — daylight glare) |
-| `--surface` | `#fdfcfa` | cards, header, form fields |
-| `--surface-2` | `#edeae3` | pressed states, chip fills, table stripes |
-| `--line` | `#d8d3c8` | hairline separators and borders (use instead of shadows, always) |
-| `--text` | `#26292c` | primary text (soft ink, not pure black) |
-| `--muted` | `#6b6e70` | metadata, labels (≥4.5:1; never below 14px) |
-| `--accent` | `#3e5f5c` | interactive only: links, buttons, focus, active states (deep muted teal) |
-| `--accent-ink` | `#f6f4ef` | text on accent-filled buttons |
-| `--ok` | `#3c6e4f` | validated/published semantics only (forest, not lime) |
-| `--ok-bg` | `#e7efe8` | quiet fill behind validation badges |
-| `--warn` | `#8a6d2f` | caution: regional use, coloquial register, offline/stale (ochre) |
-| `--warn-bg` | `#f2ead4` | offline banner and caution-strip fill |
-| `--danger` | `#8c4a3f` | veto, vulgar register, destructive only (brick, not fire-engine) |
-| `--danger-bg` | `#f0e0dc` | fill behind danger strips |
+| `--bg` | `#faf7f3` | page background (warm cream; never stark white — daylight glare) |
+| `--surface` | `#ffffff` | cards, header, form fields |
+| `--surface-2` | `#f5f1ec` | pressed states, chip fills, table stripes |
+| `--line` | `#e8e2d9` | hairline separators and borders (use instead of shadows, always) |
+| `--text` | `#2c2926` | primary text (soft ink, not pure black) |
+| `--muted` | `#8a827a` | metadata, labels (≥4.5:1; never below 14px) |
+| `--accent` | `#d45a3a` | interactive only: links, buttons, focus, active states (warm coral/terracotta) |
+| `--accent-ink` | `#ffffff` | text on accent-filled buttons |
+| `--ok` | `#3a7d5c` | validated/published semantics only (forest, not lime) |
+| `--ok-bg` | `#e8f2ec` | quiet fill behind validation badges |
+| `--warn` | `#b07d2e` | caution: regional use, coloquial register, offline/stale (ochre) |
+| `--warn-bg` | `#faf0d8` | offline banner and caution-strip fill |
+| `--danger` | `#c44b3a` | veto, vulgar register, destructive only (brick, not fire-engine) |
+| `--danger-bg` | `#fbe8e4` | fill behind danger strips |
 
-Rules: everything is low-saturation and warm; **no electric blue, no neon, no saturated highlight anywhere**. Semantic colors are always paired with a word — never color alone. Accent never decorates headings or emphasis. No gradients, no glassmorphism, **no shadows** (borders and background shifts carry all depth), no dark sections.
+Rules: everything is low-saturation and warm; **no electric blue, no neon, no saturated highlight anywhere**. Semantic colors are always paired with a word — never color alone. Accent never decorates headings or emphasis. No gradients, no glassmorphism, no dark sections. Shadows exist but stay faint (≤ rgba(44,41,38,.06) on cards, a soft coral glow on primary buttons) — borders still carry most of the depth.
 
 ### Typography — editorial two-family system (zero bytes: system fonts only)
 
@@ -46,7 +46,7 @@ Spanish compounds are long ("Concientización/sensibilización pública") — ev
 
 ### Space, shape, motion
 
-- **Radius 5px everywhere** — a uniform, barely-there softening on chips, buttons, inputs, banners. Never larger; no pill shapes.
+- **Radius hierarchy** — pill (28px) for primary actions and the search field; 12px for cards; 10px for form inputs; 3-4px for chips. Pill = action, rounded rect = data entry.
 - 4px spacing grid; card padding 16px; page gutter 16px; max content width 44rem centered.
 - Hairline rules (`--line`, 1px) structure the page like a well-set book: under the header, between result entries, above the footer. Cards may be borderless surfaces separated by rules rather than boxes — prefer the dictionary-entry look over the card-grid look.
 - Touch targets ≥48×48px; adjacent targets ≥8px apart.
@@ -56,7 +56,7 @@ Spanish compounds are long ("Concientización/sensibilización pública") — ev
 ## Components (build these exactly)
 
 - **Search field (hero)**: full-width, 56px tall, `--surface` with 1px `--line` border (sharp corners), placeholder "aplastamiento… / crush injury…", inline-SVG search glyph. Autofocused on Home.
-- **Result entry** (dictionary style, not card): serif term (22px) + small-caps `ES`/`EN` marker in `--muted`; next line the equivalent at the same 22px serif preceded by `⇄` in `--ok` — **the equivalent is the answer; it never looks like metadata**. Below: 13.5px sans chip row (category · register · zone). Entries separated by 1px rules, no boxes.
+- **Result entry** (dictionary style, not card): serif term (22px) + small-caps `ES`/`EN` marker in `--muted`; next line the equivalent at the same 22px serif preceded by `⇄` in `--ok` — **the equivalent is the answer; it never looks like metadata**. Below: 13.5px sans chip row (category · register · zone). Entries are soft white cards (12px radius, hairline border, faint shadow) floating on the cream background.
 - **Chips**: rectangular, 2px×8px padding, 13.5px sans. Category = `--surface-2` fill. Register: formal/neutral = `--line` outline; coloquial = `--warn` outline + the word; vulgar = `--danger-bg` fill, `--danger` text, explicit word "vulgar". Zone = `--warn` outline "uso regional".
 - **Validation badge**: `--ok-bg` fill, `--ok` text: "✓ validado · 2 revisores". Seed rows: "fuente oficial". Pending (queue only): `--warn-bg`/"en revisión".
 - **Buttons**: primary = `--accent` fill, `--accent-ink` text; secondary = 1px `--line` outline on `--surface`; danger-secondary (veto) = 1px `--danger` outline. Square. Full-width on mobile forms.

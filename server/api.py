@@ -15,8 +15,14 @@ from server.quorum import PENDING
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
-CATEGORIES = {"Médico", "Construcción/Rescate", "Refugios", "Servicios",
-              "Clima", "Modismos", "Protocolos"}
+# Domains defined by the terminology team (2026-07-04). Terms published under
+# the older category names remain valid history; the search filter offers both.
+CATEGORIES = {"Medicina general", "Seguridad alimentaria", "Urbanismo",
+              "Seguridad, protección y resguardo",
+              "División político-administrativa y geografía nacional"}
+
+# es = español (Venezuela), the pivot language; every other code pairs with it.
+LANGS = ("es", "en", "fr", "pt", "es-MX", "es-ES", "es-SV", "es-AR")
 
 
 def public_term(row):
@@ -28,8 +34,12 @@ def public_term(row):
         "text": row["text"],
         "definition": row["definition"],
         "category": row["category"],
+        "subdomain": row["subdomain"],
         "register": row["register"],
         "zone": row["zone"],
+        "variations": row["variations"],
+        "contrast_note": row["contrast_note"],
+        "ling_info": row["ling_info"],
         "example": row["example"],
         "source": row["source"],
         "status": row["status"],
@@ -63,8 +73,8 @@ def submit_term():
         return jsonify(error=f"missing fields: {missing}"), 400
     if payload["category"] not in CATEGORIES:
         return jsonify(error="unknown category"), 400
-    if payload["lang"] not in ("es", "en"):
-        return jsonify(error="MVP languages are es/en"), 400
+    if payload["lang"] not in LANGS:
+        return jsonify(error=f"supported languages: {', '.join(LANGS)}"), 400
 
     db = get_db()
     if _throttled(db):
@@ -73,12 +83,15 @@ def submit_term():
     with db:
         cur = db.execute(
             "INSERT INTO terms (concept_id, lang, text, definition, category,"
-            " register, zone, example, source, status)"
-            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            " subdomain, register, zone, variations, contrast_note, ling_info,"
+            " example, source, status)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (payload.get("concept_id") or uuid.uuid4().hex,
              payload["lang"], payload["text"], payload.get("definition"),
-             payload["category"],
+             payload["category"], payload.get("subdomain"),
              payload.get("register", "neutral"), payload.get("zone"),
+             payload.get("variations"), payload.get("contrast_note"),
+             payload.get("ling_info"),
              payload.get("example"), payload.get("source", "community"),
              PENDING),
         )

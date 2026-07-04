@@ -7,7 +7,7 @@ import uuid
 from flask import Blueprint, current_app, render_template, request
 
 from server import ratelimit, tokens
-from server.api import CATEGORIES, public_term
+from server.api import CATEGORIES, LANGS, public_term
 from server.db import get_db
 from server.quorum import PENDING
 from server.search import build_match
@@ -26,6 +26,11 @@ def _throttled(db):
 def index():
     q = (request.args.get("q") or "").strip()
     category = request.args.get("category") or ""
+    # Filter offers the team's current domains plus any category actually
+    # published (terms predating the 2026-07 domain list stay findable).
+    live = [r[0] for r in get_db().execute(
+        "SELECT DISTINCT category FROM terms WHERE status='published'")]
+    filter_cats = sorted(CATEGORIES.union(live))
     results = []
     if q and len(q) <= 100:
         match = build_match(q)
@@ -46,7 +51,7 @@ def index():
                     (row["concept_id"], row["lang"])).fetchall()]
                 results.append(d)
     return render_template("index.html", q=q, category=category,
-                           categories=CATEGORY_LIST, results=results)
+                           categories=filter_cats, results=results)
 
 
 @bp_web.get("/term/<int:term_id>")
@@ -77,7 +82,7 @@ def submit():
         if f.get("website"):
             error = "Envío rechazado."
         elif not f.get("text") or f.get("category") not in CATEGORIES \
-                or f.get("lang") not in ("es", "en"):
+                or f.get("lang") not in LANGS:
             error = "Faltan campos obligatorios."
         elif _throttled(db):
             error = "Demasiados envíos, intente más tarde."
@@ -85,12 +90,16 @@ def submit():
             with db:
                 cur = db.execute(
                     "INSERT INTO terms (concept_id, lang, text, definition,"
-                    " category, register, zone, example, source, status)"
-                    " VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    " category, subdomain, register, zone, variations,"
+                    " contrast_note, ling_info, example, source, status)"
+                    " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (uuid.uuid4().hex, f["lang"], f["text"].strip(),
                      f.get("definition") or None,
-                     f["category"], f.get("register", "neutral"),
-                     f.get("zone") or None, f.get("example") or None,
+                     f["category"], f.get("subdomain") or None,
+                     f.get("register", "neutral"), f.get("zone") or None,
+                     f.get("variations") or None,
+                     f.get("contrast_note") or None,
+                     f.get("ling_info") or None, f.get("example") or None,
                      "community", PENDING))
                 token = tokens.issue(db, "term", cur.lastrowid)
     return render_template("submit.html", categories=CATEGORY_LIST,

@@ -12,7 +12,8 @@ import sqlite3
 
 from server.quorum import resolve, PENDING, PUBLISHED
 
-REVISABLE_FIELDS = {"text", "definition", "category", "register", "zone",
+REVISABLE_FIELDS = {"text", "definition", "category", "subdomain", "register",
+                    "zone", "variations", "contrast_note", "ling_info",
                     "example", "source"}
 
 
@@ -80,12 +81,15 @@ def _apply_revision(conn, revision):
         raise VoteError(f"revision proposes non-revisable fields: {sorted(illegal)}")
     fields = {k: base[k] for k in
               ("concept_id", "lang", "text", "definition", "category",
-               "register", "zone", "example", "audio_ref", "source")}
+               "subdomain", "register", "zone", "variations", "contrast_note",
+               "ling_info", "example", "audio_ref", "source")}
     fields.update(proposed)
     conn.execute(
         "INSERT INTO terms (concept_id, lang, text, definition, category,"
-        " register, zone, example, audio_ref, source, status) VALUES"
-        " (:concept_id, :lang, :text, :definition, :category, :register, :zone,"
+        " subdomain, register, zone, variations, contrast_note, ling_info,"
+        " example, audio_ref, source, status) VALUES"
+        " (:concept_id, :lang, :text, :definition, :category, :subdomain,"
+        "  :register, :zone, :variations, :contrast_note, :ling_info,"
         "  :example, :audio_ref, :source, 'published')",
         fields,
     )

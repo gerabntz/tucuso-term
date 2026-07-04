@@ -40,12 +40,12 @@ def test_search_page_shows_counterpart(client):
 
 def test_form_submission_no_js(client):
     r = client.post("/submit", data={"text": "derrumbe", "lang": "es",
-                                     "category": "Construcción/Rescate"})
+                                     "category": "Urbanismo"})
     assert r.status_code == 200
     assert "código" in r.get_data(as_text=True).lower()
     # honeypot
     r = client.post("/submit", data={"text": "x", "lang": "es",
-                                     "category": "Médico", "website": "spam"})
+                                     "category": "Urbanismo", "website": "spam"})
     assert "rechazado" in r.get_data(as_text=True)
 
 
@@ -56,12 +56,15 @@ def test_revision_form_no_js(client):
     assert "seguimiento" in r.get_data(as_text=True)
 
 
-def test_light_editorial_theme(client):
-    """Design spec v2: warm paper light theme, soft 5px corners, muted accent."""
+def test_terracotta_theme(client):
+    """Design spec v3: cream background, coral accent, pill actions (28px),
+    rounded cards (12px), soft inputs (10px)."""
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
-    assert "--bg: #f6f4ef" in css
-    assert "--accent: #3e5f5c" in css
-    assert "border-radius: 5px" in css
+    assert "--bg: #faf7f3" in css
+    assert "--accent: #c04e30" in css
+    assert "border-radius: 28px" in css
+    assert "border-radius: 12px" in css
+    assert "border-radius: 10px" in css
     html = client.get("/").get_data(as_text=True)
     assert 'lang="es"' in html  # ES-first UI
 

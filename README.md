@@ -8,7 +8,7 @@ gated by a 2-human bilingual reviewer quorum.
 - **No accounts for readers or submitters.** Reviewers are the only accounts.
 - **No runtime LLM.** Humans decide correctness.
 - **Anti-surveillance schema.** No field can profile a person.
-- **Offline after first load**, ≤500 KB app shell, light editorial theme built
+- **Offline after first load**, ≤500 KB app shell, warm terracotta theme built
   for daylight outdoor use.
 - **Open export:** versioned SQLite/CSV/JSON — the future mobile app's content pipeline.
 

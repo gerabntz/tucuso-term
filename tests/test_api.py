@@ -16,7 +16,7 @@ def client(tmp_path):
 
 
 def submit(client, **over):
-    payload = dict(text="colapso estructural", lang="es", category="Construcción/Rescate")
+    payload = dict(text="colapso estructural", lang="es", category="Urbanismo")
     payload.update(over)
     return client.post("/api/terms", json=payload)
 
@@ -33,7 +33,7 @@ def test_submit_returns_token_and_pending(client):
 def test_honeypot_and_validation(client):
     assert submit(client, website="http://spam").status_code == 400
     assert submit(client, category="Nope").status_code == 400
-    assert submit(client, lang="fr").status_code == 400
+    assert submit(client, lang="xx").status_code == 400
     r = client.post("/api/terms", json={"lang": "es"})
     assert r.status_code == 400
 

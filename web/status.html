@@ -7,10 +7,13 @@
   <button type="submit">Consultar</button>
 </form>
 {% if status %}
-<div class="notice">
-  <p>Estado: <strong>{{ {'pending_review': 'en revisión',
-                         'published': 'publicado',
-                         'rejected': 'rechazado'}.get(status, status) }}</strong></p>
+<div class="status-card {{ status if status in ('published', 'rejected') else '' }}">
+  <span class="sc-label">{{ {'pending_review': 'En revisión',
+                             'published': 'Publicado',
+                             'rejected': 'Rechazado'}.get(status, status) }}</span>
+  <span class="meta">{{ {'pending_review': 'Esperando el voto de dos revisores bilingües.',
+                         'published': 'Ya aparece en las búsquedas del glosario.',
+                         'rejected': 'No fue aprobado; puede proponer una versión corregida.'}.get(status, '') }}</span>
 </div>
 {% elif token %}
 <div class="notice error">Código desconocido o expirado.</div>

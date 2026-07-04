@@ -36,12 +36,12 @@
    python -m server.seed_publish data/tucuso.db             # publish
    ```
    Idempotent: re-runs skip rows already published from the same source.
-   On a database created before migration 006 (`terms.definition`), apply
-   it first:
+   On an existing database, apply any migration added after it was created
+   (each file runs once, in order — e.g. 006, then 007):
    ```bash
    python -c "import sqlite3; \
               sqlite3.connect('data/tucuso.db').executescript( \
-              open('data/migrations/006_terms_definition.sql').read())"
+              open('data/migrations/007_ficha_fields.sql').read())"
    ```
 5. Web app: **Add a new web app → Manual configuration** (not the "Flask"
    wizard — it scaffolds a template that doesn't match this repo) **→ Python
