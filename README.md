@@ -36,6 +36,8 @@ Stack rationale: `docs/adr-001-stack.md`.
 ## License
 
 - **Code**: [GPL-3.0-or-later](LICENSE) — share-alike; derivatives must stay open.
+- **Fonts**: Playfair Display & Lora, self-hosted subsets under the
+  [SIL Open Font License](web/static/fonts/OFL.txt).
 - **Glossary content & seed data**: [CC BY-SA 4.0](data/LICENSE-DATA) — reuse
   freely with attribution, share alike. Vendored third-party sources keep their
   own terms: UNISDR 2009 terminology permits free reuse with attribution; the

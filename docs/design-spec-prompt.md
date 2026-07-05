@@ -1,4 +1,4 @@
-# Design-system prompt — Tucuso-term, warm terracotta theme v3 (paste whole into Claude design)
+# Design-system prompt — Tucuso-term, «papel y arcilla» v4 (paste whole into Claude design)
 
 You are producing high-fidelity UI for **Tucuso-term**, an offline-capable multilingual emergency glossary (Venezuelan Spanish pivot ⇄ EN/FR/PT and regional Spanish variants) used by volunteer interpreters in the Venezuela earthquake response, mostly **outdoors in daylight** on inexpensive Android phones. Mood: **a well-made reference book** — think field manual meets elegant dictionary: quiet, warm, typographic, authoritative. Explicitly NOT: app-like, gamified, neon, glossy, playful. (Soft radii are in: pill actions, rounded cards — see the radius hierarchy below.)
 
@@ -10,24 +10,29 @@ The design system below is **decided, not suggested**. Apply it exactly; your cr
 
 | Token | Value | Use — and nothing else |
 |---|---|---|
-| `--bg` | `#faf7f3` | page background (warm cream; never stark white — daylight glare) |
-| `--surface` | `#ffffff` | cards, header, form fields |
-| `--surface-2` | `#f5f1ec` | pressed states, chip fills, table stripes |
-| `--line` | `#e8e2d9` | hairline separators and borders (use instead of shadows, always) |
-| `--text` | `#2c2926` | primary text (soft ink, not pure black) |
-| `--muted` | `#8a827a` | metadata, labels (≥4.5:1; never below 14px) |
-| `--accent` | `#d45a3a` | interactive only: links, buttons, focus, active states (warm coral/terracotta) |
-| `--accent-ink` | `#ffffff` | text on accent-filled buttons |
-| `--ok` | `#3a7d5c` | validated/published semantics only (forest, not lime) |
-| `--ok-bg` | `#e8f2ec` | quiet fill behind validation badges |
-| `--warn` | `#b07d2e` | caution: regional use, coloquial register, offline/stale (ochre) |
-| `--warn-bg` | `#faf0d8` | offline banner and caution-strip fill |
-| `--danger` | `#c44b3a` | veto, vulgar register, destructive only (brick, not fire-engine) |
-| `--danger-bg` | `#fbe8e4` | fill behind danger strips |
+| `--bg` | `#f7f3ec` | page background (warm ivory; never stark white — daylight glare) |
+| `--surface` | `#fffdf9` | cards, header, form fields |
+| `--surface-2` | `#f0eae0` | pressed states, chip fills, table stripes |
+| `--line` | `#e3dcd0` | hairline separators and borders (use instead of shadows, always) |
+| `--text` | `#29241f` | primary text (soft ink, not pure black) |
+| `--muted` | `#6e6459` | metadata, labels (≥4.5:1; never below 14px) |
+| `--accent` | `#a34a2a` | interactive only: links, buttons, focus, active states (deep clay) |
+| `--accent-ink` | `#fffdf9` | text on accent-filled buttons |
+| `--ok` | `#3f7258` | validated/published semantics only (forest, not lime) |
+| `--ok-bg` | `#e6efe9` | quiet fill behind validation badges |
+| `--warn` | `#826422` | caution: regional use, coloquial register, offline/stale (ochre) |
+| `--warn-bg` | `#f5ecd6` | offline banner and caution-strip fill |
+| `--danger` | `#9c4130` | veto, vulgar register, destructive only (brick, not fire-engine) |
+| `--danger-bg` | `#f4e3de` | fill behind danger strips |
 
 Rules: everything is low-saturation and warm; **no electric blue, no neon, no saturated highlight anywhere**. Semantic colors are always paired with a word — never color alone. Accent never decorates headings or emphasis. No gradients, no glassmorphism, no dark sections. Shadows exist but stay faint (≤ rgba(44,41,38,.06) on cards, a soft coral glow on primary buttons) — borders still carry most of the depth.
 
-### Typography — editorial two-family system (zero bytes: system fonts only)
+### Typography — editorial three-voice system (self-hosted woff2, ~180KB total)
+Playfair Display (600/700 + italic 600) for headings, headwords and the wordmark;
+Lora (400/400i/600) for editorial body (definitions, senses, examples, pronunciation);
+system sans for utilitarian UI (buttons, labels, chips, nav). Fonts are vendored in
+`web/static/fonts/` under OFL — never loaded from Google (N3). Dark theme
+«biblioteca de noche»: bg #1d1a16, accent #dd8563, low-blue warm tones.
 
 - Display/serif: the generic `Georgia, "Times New Roman", serif` stack — used for the wordmark, page titles, and **the glossary terms themselves** (terms are the content; the serif is what makes this feel like a dictionary, not an app).
 - Text/sans: `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` — body, forms, chips, buttons.

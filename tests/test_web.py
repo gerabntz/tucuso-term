@@ -54,12 +54,20 @@ def test_revision_form_no_js(client):
     assert "seguimiento" in r.get_data(as_text=True)
 
 
-def test_terracotta_theme(client):
-    """Design spec v3: cream background, coral accent, pill actions (28px),
-    rounded cards (12px), soft inputs (10px)."""
+def test_papel_y_arcilla_theme(client):
+    """Design spec v4: warm ivory background, deep clay accent, pill actions
+    (28px), rounded cards (12px), soft inputs (10px); self-hosted Playfair
+    Display (headings) + Lora (editorial body), no third-party origins."""
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
-    assert "--bg: #faf7f3" in css
-    assert "--accent: #c04e30" in css
+    assert "--bg: #f7f3ec" in css
+    assert "--accent: #a34a2a" in css
+    assert "--bg: #1d1a16" in css and "--accent: #dd8563" in css  # dark tokens
+    assert "Playfair Display" in css and "Lora" in css
+    assert "googleapis" not in css and "gstatic" not in css  # N3: vendored only
+    for f in ("playfair-600.woff2", "playfair-700.woff2", "playfair-600i.woff2",
+              "lora-400.woff2", "lora-400i.woff2", "lora-600.woff2"):
+        assert (REPO_ROOT / "web" / "static" / "fonts" / f).stat().st_size > 0
+    assert (REPO_ROOT / "web" / "static" / "fonts" / "OFL.txt").exists()
     assert "border-radius: 28px" in css
     assert "border-radius: 12px" in css
     assert "border-radius: 10px" in css
@@ -85,7 +93,8 @@ def test_first_load_budget(client):
                   "/static/icon.svg", "/sw.js"):
         total += len(client.get(asset).get_data())
     assert total < BUDGET_BYTES, f"first load is {total} bytes"
-    assert total < 50 * 1024  # we should be nowhere near the cap
+    # 6 self-hosted woff2 subsets (~180KB) ride inside this; still far from M6
+    assert total < 250 * 1024
 
 
 def test_saved_page_is_client_side_only(client):

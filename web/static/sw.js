@@ -2,11 +2,14 @@
    glossary snapshot swap + offline navigation fallback. */
 "use strict";
 
-var SHELL_CACHE = "tucuso-shell-v8";
+var SHELL_CACHE = "tucuso-shell-v9";
 var DATA_CACHE = "tucuso-data";
 var SNAPSHOT = "/api/export/terms.json";
 var SHELL = ["/", "/static/style.css", "/static/app.js", "/static/manifest.json",
-             "/static/icon.svg", "/submit", "/status", "/install", "/guardados"];
+             "/static/icon.svg", "/submit", "/status", "/install", "/guardados",
+             "/static/fonts/playfair-600.woff2", "/static/fonts/playfair-700.woff2",
+             "/static/fonts/playfair-600i.woff2", "/static/fonts/lora-400.woff2",
+             "/static/fonts/lora-400i.woff2", "/static/fonts/lora-600.woff2"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(

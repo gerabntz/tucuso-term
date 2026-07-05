@@ -4,8 +4,8 @@
   "description": "Glosario EN⇄ES de emergencia para intérpretes voluntarios",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf7f3",
-  "theme_color": "#faf7f3",
+  "background_color": "#f7f3ec",
+  "theme_color": "#f7f3ec",
   "lang": "es",
   "icons": [
     { "src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml" }

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#faf7f3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#201d1a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1d1a16" media="(prefers-color-scheme: dark)">
 <title>{% block title %}Tucuso-term{% endblock %}</title>
 <script>/* pre-paint theme pin to avoid a flash of the wrong theme */
 try{var t=localStorage.getItem("tucuso-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
@@ -12,15 +12,18 @@ try{var t=localStorage.getItem("tucuso-theme");if(t)document.documentElement.set
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 </head>
 <body>
-<header>
+<header class="masthead">
   <a class="brand" href="/">Tucuso-term</a>
-  <nav>
-    <a href="/submit">Proponer término</a>
-    <a href="/guardados">Guardados</a>
-    <a href="/status">Estado de envío</a>
-    <a href="/install">Instalar</a>
-    <button id="theme-toggle" type="button" hidden aria-label="Cambiar tema"></button>
-  </nav>
+  <details class="menu">
+    <summary>Menú</summary>
+    <nav>
+      <a href="/submit">Proponer término</a>
+      <a href="/guardados">Guardados</a>
+      <a href="/status">Estado de envío</a>
+      <a href="/install">Instalar</a>
+      <button id="theme-toggle" type="button" hidden aria-label="Cambiar tema"></button>
+    </nav>
+  </details>
 </header>
 <div id="offline-banner" hidden>Sin conexión — mostrando la copia local del glosario<span id="snapshot-date"></span></div>
 <main>
