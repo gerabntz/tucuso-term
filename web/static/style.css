@@ -54,7 +54,8 @@ h1 { font-size: 1.6rem; } h2 { font-size: 1.25rem; }
 
 /* ---- Masthead: editorial book/newspaper header, not an app bar ---- */
 .masthead {
-  position: relative; text-align: center;
+  position: relative; z-index: 100; /* keep the open menu above page content */
+  text-align: center;
   padding: 1rem 1rem .7rem; background: var(--surface);
   border-bottom: 3px solid var(--text);
   box-shadow: 0 -4px 0 -3px var(--line) inset; /* double rule: hairline + ink */
@@ -83,7 +84,7 @@ h1 { font-size: 1.6rem; } h2 { font-size: 1.25rem; }
   position: absolute; right: 0; top: calc(100% + .4rem);
   width: 15rem; background: var(--surface);
   border: 1px solid var(--line); border-top: 3px solid var(--text);
-  box-shadow: 0 8px 28px rgba(41,36,31,.14); z-index: 10;
+  box-shadow: 0 8px 28px rgba(41,36,31,.14); z-index: 100;
 }
 .menu nav a {
   display: flex; align-items: center; margin: 0;
