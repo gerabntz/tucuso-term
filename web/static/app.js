@@ -21,6 +21,31 @@
   // Ask the browser not to evict our offline glossary under storage pressure (M11)
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
+  // Theme toggle: auto (system) → dark → light. Device-local preference;
+  // base.html applies it pre-paint so there is no flash.
+  var themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) {
+    var THEMES = ["", "dark", "light"];
+    var LABELS = { "": "Tema: auto", "dark": "Tema: oscuro", "light": "Tema: claro" };
+    function currentTheme() {
+      try { return localStorage.getItem("tucuso-theme") || ""; } catch (e) { return ""; }
+    }
+    function applyTheme(t) {
+      if (t) document.documentElement.setAttribute("data-theme", t);
+      else document.documentElement.removeAttribute("data-theme");
+      try {
+        if (t) localStorage.setItem("tucuso-theme", t);
+        else localStorage.removeItem("tucuso-theme");
+      } catch (e) {}
+      themeBtn.textContent = LABELS[t];
+    }
+    themeBtn.hidden = false;
+    themeBtn.textContent = LABELS[currentTheme()];
+    themeBtn.addEventListener("click", function () {
+      applyTheme(THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length]);
+    });
+  }
+
   // Favorites + history — device-local only (localStorage); nothing is ever
   // sent to the server, consistent with the anti-surveillance schema (M4/M9).
   var HIST_MAX = 30;

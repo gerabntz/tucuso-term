@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#faf7f3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#201d1a" media="(prefers-color-scheme: dark)">
 <title>{% block title %}Tucuso-term{% endblock %}</title>
+<script>/* pre-paint theme pin to avoid a flash of the wrong theme */
+try{var t=localStorage.getItem("tucuso-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 </head>
@@ -17,6 +19,7 @@
     <a href="/guardados">Guardados</a>
     <a href="/status">Estado de envío</a>
     <a href="/install">Instalar</a>
+    <button id="theme-toggle" type="button" hidden aria-label="Cambiar tema"></button>
   </nav>
 </header>
 <div id="offline-banner" hidden>Sin conexión — mostrando la copia local del glosario<span id="snapshot-date"></span></div>

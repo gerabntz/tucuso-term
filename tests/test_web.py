@@ -128,3 +128,16 @@ def test_littre_presentation(migrated_db):
     assert "Punto donde" not in results  # list shows first sense only
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
     assert "prefers-color-scheme: dark" in css
+
+
+def test_theme_toggle(client):
+    """Manual dark/light pin: pre-paint script + toggle button + CSS blocks
+    for both the system preference and the html[data-theme] override."""
+    html = client.get("/").get_data(as_text=True)
+    assert 'id="theme-toggle"' in html
+    assert "tucuso-theme" in html  # pre-paint pin in <head>
+    css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
+    assert 'html[data-theme="dark"]' in css
+    assert 'html:not([data-theme="light"])' in css
+    js = (REPO_ROOT / "web" / "static" / "app.js").read_text()
+    assert "theme-toggle" in js
