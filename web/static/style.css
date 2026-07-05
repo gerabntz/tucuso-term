@@ -46,7 +46,7 @@ body {
   font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh; display: flex; flex-direction: column;
 }
-h1, h2 { font-family: var(--serif-h); line-height: 1.2; }
+h1, h2 { font-family: var(--serif-h); line-height: 1.2; text-wrap: balance; }
 h1 { font-size: 1.6rem; } h2 { font-size: 1.25rem; }
 
 /* ---- Masthead: editorial book/newspaper header, not an app bar ---- */
@@ -103,7 +103,7 @@ h1 { font-size: 1.6rem; } h2 { font-size: 1.25rem; }
 }
 
 main { flex: 1; width: 100%; max-width: 44rem; margin: 0 auto; padding: 1rem; }
-footer { padding: 1rem; color: var(--muted); font-size: .82rem; text-align: center; border-top: 1px solid var(--line); }
+footer { padding: 1rem; color: var(--muted); font-size: .875rem; text-align: center; border-top: 1px solid var(--line); }
 footer a { color: var(--accent); }
 
 #offline-banner {
@@ -112,8 +112,8 @@ footer a { color: var(--accent); }
 }
 
 /* Search hero */
-#search-form h1, main > h1:first-child { text-align: center; }
-.search-sub { color: var(--muted); text-align: center; margin: -.4rem 0 1rem; font: italic 400 .95rem/1.5 var(--serif-b); }
+#search-form h1, main > h1:first-child { text-align: center; margin: .7rem 0 .35rem; }
+.search-sub { color: var(--muted); text-align: center; margin: 0 0 1.1rem; font: italic 400 .95rem/1.5 var(--serif-b); }
 
 form { display: grid; gap: .8rem; margin: 1rem 0; }
 #search-form { grid-template-columns: minmax(0, 1fr) auto auto; }
@@ -210,7 +210,9 @@ code {
 @media (max-width: 34rem) {
   #search-form { grid-template-columns: 1fr; }
   #search-form select, #search-form button { width: 100%; }
-  .brand { font-size: 1.25rem; }
+  .brand { font-size: 1.375rem; }
+  h1 { font-size: 1.55rem; }
+  .term h1 { font-size: 1.7rem; }
 }
 
 /* Dark theme «biblioteca de noche»: light is ALWAYS the default; dark only
