@@ -2,7 +2,7 @@
    glossary snapshot swap + offline navigation fallback. */
 "use strict";
 
-var SHELL_CACHE = "tucuso-shell-v10";
+var SHELL_CACHE = "tucuso-shell-v11";
 var DATA_CACHE = "tucuso-data";
 var SNAPSHOT = "/api/export/terms.json";
 var SHELL = ["/", "/static/style.css", "/static/app.js", "/static/manifest.json",

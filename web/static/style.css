@@ -203,12 +203,6 @@ code {
 .status-card.rejected { background: var(--err-bg); border-color: var(--err); }
 .status-card.rejected .sc-label { color: var(--err); }
 
-/* Home wave — fills updated to the v4 clay/sage tokens */
-.wave-deco {
-  height: 90px; margin-top: 1.5rem; pointer-events: none; opacity: .35;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 90' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C 100 20 180 90 280 55 S 380 30 400 45 L 400 90 L 0 90 Z' fill='%23a34a2a' opacity='.18'/%3E%3Cpath d='M0 75 C 120 45 220 95 400 60 L 400 90 L 0 90 Z' fill='%233f7258' opacity='.14'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
-}
-
 @media (max-width: 34rem) {
   #search-form { grid-template-columns: 1fr; }
   .brand { font-size: 1.25rem; }
@@ -226,7 +220,6 @@ html[data-theme="dark"] {
   --err: #dd8f7e; --err-bg: #392621;
 }
 html[data-theme="dark"] input::placeholder { color: #8f867e; }
-html[data-theme="dark"] .wave-deco { opacity: .5; filter: brightness(1.9); }
 html[data-theme="dark"] .masthead,
 html[data-theme="dark"] .menu nav { border-top-color: var(--muted); }
 html[data-theme="dark"] .masthead { border-bottom-color: var(--muted); }
