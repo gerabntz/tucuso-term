@@ -32,7 +32,8 @@ Playfair Display (600/700 + italic 600) for headings, headwords and the wordmark
 Lora (400/400i/600) for editorial body (definitions, senses, examples, pronunciation);
 system sans for utilitarian UI (buttons, labels, chips, nav). Fonts are vendored in
 `web/static/fonts/` under OFL — never loaded from Google (N3). Dark theme
-«biblioteca de noche»: bg #1d1a16, accent #dd8563, low-blue warm tones.
+«biblioteca de noche»: bg #1d1a16, accent #dd8563, low-blue warm tones — applied
+ONLY via the manual toggle (html[data-theme=dark]); light is always the default.
 
 - Display/serif: the generic `Georgia, "Times New Roman", serif` stack — used for the wordmark, page titles, and **the glossary terms themselves** (terms are the content; the serif is what makes this feel like a dictionary, not an app).
 - Text/sans: `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` — body, forms, chips, buttons.
@@ -51,7 +52,7 @@ Spanish compounds are long ("Concientización/sensibilización pública") — ev
 
 ### Space, shape, motion
 
-- **Radius hierarchy** — pill (28px) for primary actions and the search field; 12px for cards; 10px for form inputs; 3-4px for chips. Pill = action, rounded rect = data entry.
+- **Radius hierarchy** — no pills: 8px buttons/actions, 6px form inputs, 12px cards, 3-4px chips. Understated and editorial.
 - 4px spacing grid; card padding 16px; page gutter 16px; max content width 44rem centered.
 - Hairline rules (`--line`, 1px) structure the page like a well-set book: under the header, between result entries, above the footer. Cards may be borderless surfaces separated by rules rather than boxes — prefer the dictionary-entry look over the card-grid look.
 - Touch targets ≥48×48px; adjacent targets ≥8px apart.

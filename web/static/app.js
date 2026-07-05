@@ -21,12 +21,12 @@
   // Ask the browser not to evict our offline glossary under storage pressure (M11)
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
-  // Theme toggle: auto (system) → dark → light. Device-local preference;
-  // base.html applies it pre-paint so there is no flash.
+  // Theme toggle: light is always the default; dark only when pinned here.
+  // Device-local preference; base.html applies it pre-paint (no flash).
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
-    var THEMES = ["", "dark", "light"];
-    var LABELS = { "": "Tema: auto", "dark": "Tema: oscuro", "light": "Tema: claro" };
+    var THEMES = ["", "dark"];
+    var LABELS = { "": "Tema: claro", "dark": "Tema: oscuro" };
     function currentTheme() {
       try { return localStorage.getItem("tucuso-theme") || ""; } catch (e) { return ""; }
     }
@@ -38,6 +38,8 @@
         else localStorage.removeItem("tucuso-theme");
       } catch (e) {}
       themeBtn.textContent = LABELS[t];
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = t === "dark" ? "#1d1a16" : "#f7f3ec";
     }
     themeBtn.hidden = false;
     themeBtn.textContent = LABELS[currentTheme()];

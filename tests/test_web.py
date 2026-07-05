@@ -68,9 +68,11 @@ def test_papel_y_arcilla_theme(client):
               "lora-400.woff2", "lora-400i.woff2", "lora-600.woff2"):
         assert (REPO_ROOT / "web" / "static" / "fonts" / f).stat().st_size > 0
     assert (REPO_ROOT / "web" / "static" / "fonts" / "OFL.txt").exists()
-    assert "border-radius: 28px" in css
+    # 4b corrections: no pills — inputs 6px, buttons 8px, cards 12px
+    assert "border-radius: 28px" not in css
     assert "border-radius: 12px" in css
-    assert "border-radius: 10px" in css
+    assert "border-radius: 8px" in css
+    assert "border-radius: 6px" in css
     html = client.get("/").get_data(as_text=True)
     assert 'lang="es"' in html  # ES-first UI
 
@@ -136,17 +138,17 @@ def test_littre_presentation(migrated_db):
     assert '<span class="ling">sust. m.</span>' in results
     assert "Punto donde" not in results  # list shows first sense only
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
-    assert "prefers-color-scheme: dark" in css
+    assert 'html[data-theme="dark"]' in css  # dark exists, but only via toggle
 
 
 def test_theme_toggle(client):
-    """Manual dark/light pin: pre-paint script + toggle button + CSS blocks
-    for both the system preference and the html[data-theme] override."""
+    """Light is always the default; dark applies only when pinned via the
+    menu toggle (html[data-theme=dark]). Pre-paint script avoids a flash."""
     html = client.get("/").get_data(as_text=True)
     assert 'id="theme-toggle"' in html
     assert "tucuso-theme" in html  # pre-paint pin in <head>
     css = (REPO_ROOT / "web" / "static" / "style.css").read_text()
     assert 'html[data-theme="dark"]' in css
-    assert 'html:not([data-theme="light"])' in css
+    assert "prefers-color-scheme" not in css  # no system-driven dark
     js = (REPO_ROOT / "web" / "static" / "app.js").read_text()
     assert "theme-toggle" in js
